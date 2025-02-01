@@ -3,27 +3,27 @@
 	"displayName": "Atmosic IDE",
 	"description": "A VS Code extension for Atmosic IDE",
 	"version": "1.7.2",
-	"icon": "media/logo.png",
-	"keywords": [
-		"zephyr",
-		"ide",
-		"vscode",
-		"extension",
-		"development environment",
-		"zephyr project",
-		"rtos"
-	],
-	"engines": {
-		"vscode": "^1.75.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/mylonics/zephyr-ide.git"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
+  "icon": "media/logo.png",
+  "keywords": [
+    "zephyr",
+    "ide",
+    "vscode",
+    "extension",
+    "development environment",
+    "zephyr project",
+    "rtos"
+  ],
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mylonics/zephyr-ide.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
 		"atmosic-ide.get-active-project-name",
 		"atmosic-ide.get-active-project-path",
 		"atmosic-ide.get-active-build-path",
@@ -35,499 +35,499 @@
 		"atmosic-ide.get-active-project-variable",
 		"atmosic-ide.get-active-build-variable",
 		"atmosic-ide.get-active-board-name",
-		"workspaceContains:.vscode/zephyr-ide.json"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"taskDefinitions": [
-			{
+    "workspaceContains:.vscode/zephyr-ide.json"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "taskDefinitions": [
+      {
 				"type": "atmosic-ide"
-			}
-		],
-		"configuration": {
-			"type": "object",
+      }
+    ],
+    "configuration": {
+      "type": "object",
 			"title": "Atmosic IDE: Projects",
-			"properties": {
+      "properties": {
 				"atmosic-ide.projects": {
-					"type": [
-						"any",
-						"null",
-						"object"
-					],
-					"default": null,
+          "type": [
+            "any",
+            "null",
+            "object"
+          ],
+          "default": null,
 					"description": "[deprecated] Atmosic IDE Project Configuration."
-				},
+        },
 				"atmosic-ide.use-zephyr-ide-json": {
-					"type": [
-						"boolean"
-					],
-					"default": false,
+          "type": [
+            "boolean"
+          ],
+          "default": false,
 					"description": "[deprecated] Allows use of separater json file to store Atmosic IDE Project Configuration."
-				},
+        },
 				"atmosic-ide.tools_directory": {
-					"type": [
-						"string"
-					],
-					"default": null,
-					"description": "Manually specifiy a tools directory for sdk download/install and global zephyr install location"
-				}
-			}
-		},
-		"keybindings": [
-			{
+          "type": [
+            "string"
+          ],
+          "default": null,
+          "description": "Manually specifiy a tools directory for sdk download/install and global zephyr install location"
+        }
+      }
+    },
+    "keybindings": [
+      {
 				"command": "atmosic-ide.build",
-				"key": "ctrl+alt+B",
-				"mac": "ctrl+alt+B"
-			},
-			{
+        "key": "ctrl+alt+B",
+        "mac": "ctrl+alt+B"
+      },
+      {
 				"command": "atmosic-ide.flash",
-				"key": "ctrl+alt+p",
-				"mac": "ctrl+alt+p"
-			}
-		],
-		"viewsWelcome": [
-			{
-				"view": "welcome",
+        "key": "ctrl+alt+p",
+        "mac": "ctrl+alt+p"
+      }
+    ],
+    "viewsWelcome": [
+      {
+        "view": "welcome",
 				"contents": "In order to use the Atmosic IDE Extension it needs to be fully Initialized.\n[Initialize Extension](command:atmosic-ide.setup-workspace-init)\n Elements of this process may be run individually as well\n This is a 5 step process that can be run by git features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about how to use git and source control in VS Code [read our docs](https://aka.ms/vscode-scm).",
-				"when": "config.git.enabled && git.state == initialized && workbenchState == empty"
-			}
-		],
-		"viewsContainers": {
-			"activitybar": [
-				{
+        "when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
 					"id": "atm",
 					"title": "Atmosic IDE",
 					"icon": "media/icon26.svg"
-				}
-			]
-		},
-		"menus": {
-			"view/title": [
-				{
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
 					"command": "atmosic-ide.add-project",
-					"group": "navigation",
+          "group": "navigation",
 					"when": "view == atmosicIdeProjects"
-				},
-				{
+        },
+        {
 					"command": "atmosic-ide.create-project",
-					"group": "navigation",
+          "group": "navigation",
 					"when": "view == atmosicIdeProjects"
-				},
-				{
+        },
+        {
 					"command": "atmosic-ide.load-projects-from-file",
-					"group": "navigation",
+          "group": "navigation",
 					"when": "view == atmosicIdeProjects"
-				},
-				{
+        },
+        {
 					"command": "atmosic-ide.save-projects-to-file",
-					"group": "navigation",
+          "group": "navigation",
 					"when": "view == atmosicIdeProjects"
-				},
-				{
+        },
+        {
 					"command": "atmosic-ide.disable-automatic-project-target",
 					"when": "view == atmosicIdeActiveProject"
-				},
-				{
+        },
+        {
 					"command": "atmosic-ide.enable-automatic-project-target",
 					"when": "view == atmosicIdeActiveProject"
-				}
-			]
-		},
-		"views": {
+        }
+      ]
+    },
+    "views": {
 			"atm": [
-				{
+        {
 					"id": "atmosicIdeExtensionSetup",
-					"name": "Extension Setup",
-					"icon": "media/logo_small.jpg",
+          "name": "Extension Setup",
+          "icon": "media/logo_small.jpg",
 					"contextualTitle": "Atmosic IDE",
-					"type": "webview"
-				},
-				{
+          "type": "webview"
+        },
+        {
 					"id": "atmosicIdeProjects",
-					"name": "Projects",
-					"icon": "media/logo_small.jpg",
+          "name": "Projects",
+          "icon": "media/logo_small.jpg",
 					"contextualTitle": "Atmosic IDE Projects",
-					"type": "webview"
-				},
-				{
+          "type": "webview"
+        },
+        {
 					"id": "atmosicIdeProjectStatus",
-					"name": "Project Config",
-					"icon": "media/logo_small.jpg",
+          "name": "Project Config",
+          "icon": "media/logo_small.jpg",
 					"contextualTitle": "Atmosic IDE Projects",
-					"type": "webview"
-				},
-				{
+          "type": "webview"
+        },
+        {
 					"id": "atmosicIdeActiveProject",
-					"name": "Active Project",
-					"icon": "media/logo_small.jpg",
+          "name": "Active Project",
+          "icon": "media/logo_small.jpg",
 					"contextualTitle": "Atmosic IDE Active Project",
-					"type": "webview"
-				}
-			]
-		},
-		"commands": [
-			{
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
 				"command": "atmosic-ide.init-workspace",
 				"title": "Atmosic IDE: Initialize Workspace"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.check-build-dependencies",
 				"title": "Atmosic IDE: Setup Check Build Dependencies Available"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.west-environment",
 				"title": "Atmosic IDE: Setup West Environment"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.install-sdk",
 				"title": "Atmosic IDE: Install SDK"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.west-init",
 				"title": "Atmosic IDE: West Init"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.west-update",
 				"title": "Atmosic IDE: West Update"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.reset-extension",
 				"title": "Atmosic IDE: Reset Extension"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.clear-projects",
 				"title": "Atmosic IDE: Clear Projects"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.load-projects-from-file",
 				"title": "Atmosic IDE: Load Projects From File",
-				"icon": "$(refresh)"
-			},
-			{
+        "icon": "$(refresh)"
+      },
+      {
 				"command": "atmosic-ide.save-projects-to-file",
 				"title": "Atmosic IDE: Save Projects To File",
-				"icon": "$(save)"
-			},
-			{
+        "icon": "$(save)"
+      },
+      {
 				"command": "atmosic-ide.disable-automatic-project-target",
 				"title": "Atmosic IDE: Disable Automatic Active Project Targeting"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.enable-automatic-project-target",
 				"title": "Atmosic IDE: Enable Automatic Active Project Targeting"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.create-project",
 				"title": "Atmosic IDE: Create Project From Template",
-				"icon": "$(add)"
-			},
-			{
+        "icon": "$(add)"
+      },
+      {
 				"command": "atmosic-ide.add-project",
 				"title": "Atmosic IDE: Add Project",
-				"icon": "$(new-folder)"
-			},
-			{
+        "icon": "$(new-folder)"
+      },
+      {
 				"command": "atmosic-ide.remove-project",
 				"title": "Atmosic IDE: Remove Project"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.add-project-config-files",
 				"title": "Atmosic IDE: Add Project KConfig Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.remove-project-config-files",
 				"title": "Atmosic IDE: Remove Project KConfig Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.add-project-overlay-files",
 				"title": "Atmosic IDE: Add Project Overlay Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.remove-project-overlay-files",
 				"title": "Atmosic IDE: Remove Project Overlay Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.set-active-project",
 				"title": "Atmosic IDE: Set Active Project"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.add-build",
 				"title": "Atmosic IDE: Add Build Configuration"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.remove-build",
 				"title": "Atmosic IDE: Remove Build"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.add-build-config-files",
 				"title": "Atmosic IDE: Add Build KConfig Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.remove-build-config-files",
 				"title": "Atmosic IDE: Remove Build KConfig Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.add-build-overlay-files",
 				"title": "Atmosic IDE: Add Build Overlay Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.remove-build-overlay-files",
 				"title": "Atmosic IDE: Remove Build Overlay Files"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.set-active-build",
 				"title": "Atmosic IDE: Set Active Build"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.add-runner",
 				"title": "Atmosic IDE: Add Runner"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.remove-runner",
 				"title": "Atmosic IDE: Remove Runner"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.set-active-runner",
 				"title": "Atmosic IDE: Set Active Runner"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.change-debug-launch-for-build",
 				"title": "Atmosic IDE: Change Debug Launch Configuration For Build"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.change-build-debug-launch-for-build",
 				"title": "Atmosic IDE: Change Build and Debug Launch Configuration For Build"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.change-debug-attach-launch-for-build",
 				"title": "Atmosic IDE: Change Debug Attach Launch Configuration For Build"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.build-pristine",
 				"title": "Atmosic IDE: Build Pristine"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.build",
 				"title": "Atmosic IDE: Build"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.buildNonSys",
 				"title": "Atmosic IDE: Build without Sysbuild"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.buildNonSpeMcu",
 				"title": "Atmosic IDE: Build without SPE-MCUBOOT"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.buildNonMcu",
 				"title": "Atmosic IDE: Build without MCUBOOT"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.westDebug",
 				"title": "Atmosic IDE: west debug"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.flash",
 				"title": "Atmosic IDE: Flash"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.clean",
 				"title": "Atmosic IDE: Clean"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.start-menu-config",
 				"title": "Atmosic IDE: Start Menu Config"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.start-gui-config",
 				"title": "Atmosic IDE: Start GUI Config"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.run-ram-report",
 				"title": "Atmosic IDE: Run RAM Report"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.run-rom-report",
 				"title": "Atmosic IDE: Run ROM Report"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.start-dtsh-shell",
 				"title": "Atmosic IDE: Start DTSh Shell"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.modify-build-arguments",
 				"title": "Atmosic IDE: Modify Build Arguments"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.update-web-view",
 				"title": "Atmosic IDE: Reload Web Views"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.use-local-zephyr-install",
 				"title": "Atmosic IDE: Use current workspace for Atmosic Install"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.use-external-zephyr-install",
 				"title": "Atmosic IDE: Use an External Folder for Atmosic Install"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.reset-zephyr-install-selection",
 				"title": "Atmosic IDE: Reset Atmosic Install Selection"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.mark-west-as-ready",
 				"title": "Atmosic IDE: Mark West as Ready"
-			},
-			{
+      },
+      {
 				"command": "atmosic-ide.shell_test",
 				"title": "Atmosic IDE: Shell Test"
-			}
-		],
-		"terminal": {
-			"profiles": [
-				{
-					"id": "zephyr-ide.terminal-profile",
-					"icon": "terminal",
+      }
+    ],
+    "terminal": {
+      "profiles": [
+        {
+          "id": "zephyr-ide.terminal-profile",
+          "icon": "terminal",
 					"title": "Atmosic IDE Terminal"
-				}
-			]
-		},
-		"debuggers": [
-			{
-				"type": "zephyr-ide",
+        }
+      ]
+    },
+    "debuggers": [
+      {
+        "type": "zephyr-ide",
 				"label": "Atmosic IDE",
-				"initialConfigurations": [
-					{
+        "initialConfigurations": [
+          {
 						"name": "Atmosic IDE: Debug",
-						"cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}",
 						"gdbPath": "${command:atmosic-ide.get-gdb-path}",
-						"executable": "${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf",
-						"request": "launch",
-						"type": "cortex-debug",
-						"servertype": "bmp",
-						"interface": "swd",
-						"device": "STM32F103",
-						"BMPGDBSerialPort": "${config:bmp_serial_port}",
-						"preLaunchCommands": [
-							"monitor rtt enable"
-						]
-					},
-					{
+            "executable": "${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "bmp",
+            "interface": "swd",
+            "device": "STM32F103",
+            "BMPGDBSerialPort": "${config:bmp_serial_port}",
+            "preLaunchCommands": [
+              "monitor rtt enable"
+            ]
+          },
+          {
 						"name": "Atmosic IDE: Attach",
-						"cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}",
 						"gdbPath": "${command:atmosic-ide.get-gdb-path}",
-						"executable": "${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf",
-						"request": "launch",
-						"type": "cortex-debug",
-						"servertype": "bmp",
-						"interface": "swd",
-						"device": "STM32F103",
-						"BMPGDBSerialPort": "${config:bmp_serial_port}",
-						"preLaunchCommands": [
-							"monitor rtt enable"
-						]
-					}
-				],
-				"configurationSnippets": [
-					{
+            "executable": "${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "bmp",
+            "interface": "swd",
+            "device": "STM32F103",
+            "BMPGDBSerialPort": "${config:bmp_serial_port}",
+            "preLaunchCommands": [
+              "monitor rtt enable"
+            ]
+          }
+        ],
+        "configurationSnippets": [
+          {
 						"label": "Atmosic IDE: Debug",
-						"description": "Basic Cortex Debug example with blackmagic probe",
-						"body": {
+            "description": "Basic Cortex Debug example with blackmagic probe",
+            "body": {
 							"name": "Atmosic IDE: Debug",
-							"cwd": "^\"\\${workspaceFolder}\"",
+              "cwd": "^\"\\${workspaceFolder}\"",
 							"gdbPath": "^\"\\${command:atmosic-ide.get-gdb-path}\"",
-							"executable": "^\"\\${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf\"",
-							"request": "launch",
-							"type": "cortex-debug",
-							"servertype": "bmp",
-							"interface": "swd",
-							"device": "STM32F103",
-							"BMPGDBSerialPort": "^\"\\${config:bmp_serial_port}\"",
-							"preLaunchCommands": [
-								"monitor rtt enable"
-							]
-						}
-					},
-					{
+              "executable": "^\"\\${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf\"",
+              "request": "launch",
+              "type": "cortex-debug",
+              "servertype": "bmp",
+              "interface": "swd",
+              "device": "STM32F103",
+              "BMPGDBSerialPort": "^\"\\${config:bmp_serial_port}\"",
+              "preLaunchCommands": [
+                "monitor rtt enable"
+              ]
+            }
+          },
+          {
 						"label": "Atmosic IDE: Attach",
-						"description": "Basic Cortex Debug attach example with blackmagic probe",
-						"body": {
+            "description": "Basic Cortex Debug attach example with blackmagic probe",
+            "body": {
 							"name": "Atmosic IDE: Attach",
-							"cwd": "^\"\\${workspaceFolder}\"",
+              "cwd": "^\"\\${workspaceFolder}\"",
 							"gdbPath": "^\"\\${command:atmosic-ide.get-gdb-path}\"",
-							"executable": "^\"\\${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf\"",
-							"request": "launch",
-							"type": "cortex-debug",
-							"servertype": "bmp",
-							"interface": "swd",
-							"device": "STM32F103",
-							"BMPGDBSerialPort": "^\"\\${config:bmp_serial_port}\"",
-							"preLaunchCommands": [
-								"monitor rtt enable"
-							]
-						}
-					},
-					{
+              "executable": "^\"\\${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf\"",
+              "request": "launch",
+              "type": "cortex-debug",
+              "servertype": "bmp",
+              "interface": "swd",
+              "device": "STM32F103",
+              "BMPGDBSerialPort": "^\"\\${config:bmp_serial_port}\"",
+              "preLaunchCommands": [
+                "monitor rtt enable"
+              ]
+            }
+          },
+          {
 						"label": "Atmosic IDE: Debug Select",
-						"description": "An example where a user will select a build each time the configuration is run",
-						"body": {
+            "description": "An example where a user will select a build each time the configuration is run",
+            "body": {
 							"name": "Atmosic IDE: Debug Select",
-							"cwd": "^\"\\${workspaceFolder}\"",
+              "cwd": "^\"\\${workspaceFolder}\"",
 							"gdbPath": "^\"\\${command:atmosic-ide.get-gdb-path}\"",
-							"executable": "^\"\\${command:zephyr-ide.select-active-build-path}/zephyr/zephyr.elf\"",
-							"request": "launch",
-							"type": "cortex-debug",
-							"servertype": "bmp",
-							"interface": "swd",
-							"device": "STM32F103",
-							"BMPGDBSerialPort": "^\"\\${config:bmp_serial_port}\"",
-							"preLaunchCommands": [
-								"monitor rtt enable"
-							]
-						}
-					}
-				]
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run esbuild-base -- --minify",
-		"esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-		"esbuild": "npm run esbuild-base -- --sourcemap",
-		"esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-		"test-compile": "tsc -p ./",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "vscode-test"
-	},
-	"devDependencies": {
-		"@types/fs-extra": "^11.0.4",
-		"@types/js-yaml": "^4.0.9",
-		"@types/mocha": "^10.0.6",
-		"@types/node": "18.x",
-		"@types/node-7z": "^2.1.8",
-		"@types/vscode": "^1.75.0",
-		"@typescript-eslint/eslint-plugin": "^7.4.0",
-		"@typescript-eslint/parser": "^7.4.0",
-		"@vscode/test-cli": "^0.0.8",
-		"@vscode/test-electron": "^2.3.9",
-		"esbuild": "^0.20.2",
-		"eslint": "^8.57.0",
-		"typescript": "^5.3.3"
-	},
-	"dependencies": {
-		"@vscode-elements/elements": "^1.2.0",
-		"@vscode/codicons": "^0.0.35",
-		"7zip-bin": "^5.2.0",
-		"compare-versions": "^6.1.0",
-		"fs-extra": "^11.2.0",
-		"js-yaml": "^4.1.0",
-		"node-7z": "^3.0.0",
-		"node-stream-zip": "^1.15.0",
-		"replace-in-file": "^7.1.0",
-		"typed-rest-client": "^1.8.11"
+              "executable": "^\"\\${command:zephyr-ide.select-active-build-path}/zephyr/zephyr.elf\"",
+              "request": "launch",
+              "type": "cortex-debug",
+              "servertype": "bmp",
+              "interface": "swd",
+              "device": "STM32F103",
+              "BMPGDBSerialPort": "^\"\\${config:bmp_serial_port}\"",
+              "preLaunchCommands": [
+                "monitor rtt enable"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/node-7z": "^2.1.8",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@vscode-elements/elements": "^1.2.0",
+    "@vscode/codicons": "^0.0.35",
+    "7zip-bin": "^5.2.0",
+    "compare-versions": "^6.1.0",
+    "fs-extra": "^11.2.0",
+    "js-yaml": "^4.1.0",
+    "node-7z": "^3.0.0",
+    "node-stream-zip": "^1.15.0",
+    "replace-in-file": "^7.1.0",
+    "typed-rest-client": "^1.8.11"
 	},
 	"__metadata": {
 		"isApplicationScoped": false,
@@ -535,5 +535,5 @@
 		"pinned": true,
 		"source": "vsix",
 		"size": 26133507
-	}
+  }
 }
