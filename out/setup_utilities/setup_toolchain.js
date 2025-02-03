@@ -117,7 +117,7 @@ async function installSdk(context, globalConfig, output, installLatest = false, 
         output.show();
         progress.report({ increment: 5 });
         if (getPlatformName() === undefined) {
-            vscode.window.showErrorMessage("Unsupported platform for Atmosic IDE");
+            vscode.window.showErrorMessage("Unsupported platform for Zephyr IDE");
             return;
         }
         let exists = await fs.pathExists((0, setup_1.getToolsDir)());
@@ -136,14 +136,14 @@ async function installSdk(context, globalConfig, output, installLatest = false, 
         }
         // Check if user canceled
         if (toolchainVersion === undefined) {
-            vscode.window.showErrorMessage("Atmosic IDE Setup canceled. Toolchain version not specified.");
+            vscode.window.showErrorMessage("Zephyr IDE Setup canceled. Toolchain version not specified.");
             return;
         }
         if (toolchainsToInstall === undefined) {
             toolchainsToInstall = await pickToolchainTarget(context, globalConfig, toolchainVersion);
         }
         if (toolchainsToInstall === undefined) {
-            vscode.window.showErrorMessage("Atmosic IDE Setup canceled. Toolchain targets not specified");
+            vscode.window.showErrorMessage("Zephyr IDE Setup canceled. Toolchain targets not specified");
             return;
         }
         globalConfig.sdkInstalled = false;
@@ -238,7 +238,7 @@ async function installSdk(context, globalConfig, output, installLatest = false, 
         globalConfig.sdkInstalled = true;
         await (0, setup_1.setGlobalState)(context, globalConfig);
         if (solo) {
-            vscode.window.showInformationMessage(`Atmosic IDE: Toolchain Setup Complete!`);
+            vscode.window.showInformationMessage(`Zephyr IDE: Toolchain Setup Complete!`);
         }
     });
 }

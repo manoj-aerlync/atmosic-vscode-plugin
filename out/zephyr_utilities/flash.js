@@ -105,7 +105,7 @@ async function flash(wsConfig, project, build, runner) {
 	cmd = `west flash --verify --device=${runner.args} -d build/${build.board.split('/')[0]}_ns/${project.rel_path} --jlink `;
     }
 
-    let taskName = "Atmosic IDE Flash: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Flash: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Flashing for ${build.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
 }

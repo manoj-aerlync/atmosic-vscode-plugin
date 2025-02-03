@@ -105,7 +105,7 @@ class TaskManager {
     }
     async loadSetupTerminal() {
         vscode.window.onDidChangeTerminalShellIntegration(async ({ terminal, shellIntegration }) => {
-            if (terminal.name === "Atmosic IDE Terminal") {
+            if (terminal.name === "Zephyr IDE Terminal") {
                 this.addTask(terminal);
                 let task = this.getTask(terminal);
                 if (task && !task.ready) {
@@ -153,7 +153,7 @@ class TaskManager {
     ;
     async createTerminal(cmd, cwd, show = false) {
         let opts = {
-            name: "Atmosic IDE Terminal",
+            name: "Zephyr IDE Terminal",
             //cwd: cwd,
             //strictEnv: true,
             hideFromUser: !show

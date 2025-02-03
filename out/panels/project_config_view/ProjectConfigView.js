@@ -87,10 +87,10 @@ class ProjectConfigView {
         this.extensionPath = extensionPath;
         this.context = context;
         this.wsConfig = wsConfig;
-        this.projectConfigState = this.context.workspaceState.get("atmosic-ide.project-config-view-state") ?? new ProjectConfigState;
+        this.projectConfigState = this.context.workspaceState.get("zephyr-ide.project-config-view-state") ?? new ProjectConfigState;
     }
     async setProjectConfigState() {
-        await this.context.workspaceState.update("atmosic-ide.project-config-view-state", this.projectConfigState);
+        await this.context.workspaceState.update("zephyr-ide.project-config-view-state", this.projectConfigState);
     }
     generateOverlayFileEntry(entry, projectName, buildName, confFiles, open) {
         entry.subItems = [];
@@ -430,23 +430,23 @@ class ProjectConfigView {
             }
             switch (message.command) {
                 case "deleteProject": {
-                    (0, project_1.removeProject)(this.context, this.wsConfig, message.value.project).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.removeProject)(this.context, this.wsConfig, message.value.project).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     break;
                 }
                 case "addBuild": {
-                    (0, project_1.addBuildToProject)(this.wsConfig, this.context, message.value.project).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project); vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.addBuildToProject)(this.wsConfig, this.context, message.value.project).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project); vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     break;
                 }
                 case "deleteBuild": {
-                    (0, project_1.removeBuild)(this.context, this.wsConfig, message.value.project, message.value.build).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project); vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.removeBuild)(this.context, this.wsConfig, message.value.project, message.value.build).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project); vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     break;
                 }
                 case "addRunner": {
-                    (0, project_1.addRunnerToBuild)(this.wsConfig, this.context, message.value.project, message.value.build).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project, message.value.build); vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.addRunnerToBuild)(this.wsConfig, this.context, message.value.project, message.value.build).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project, message.value.build); vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     break;
                 }
                 case "deleteRunner": {
-                    (0, project_1.removeRunner)(this.context, this.wsConfig, message.value.project, message.value.build, message.value.runner).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project, message.value.build); vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.removeRunner)(this.context, this.wsConfig, message.value.project, message.value.build, message.value.runner).finally(() => { (0, project_1.setActive)(this.wsConfig, message.value.project, message.value.build); vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     break;
                 }
                 case "build": {
@@ -522,17 +522,17 @@ class ProjectConfigView {
                     break;
                 }
                 case "modifyBuildArgs": {
-                    (0, project_1.modifyBuildArguments)(this.context, this.wsConfig, message.value.project, message.value.build).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.modifyBuildArguments)(this.context, this.wsConfig, message.value.project, message.value.build).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     (0, project_1.setActive)(this.wsConfig, message.value.project, message.value.build, message.value.runner);
                 }
                 case "addFile": {
                     switch (message.value.cmd) {
                         case "addOverlayFile": {
-                            (0, project_1.addConfigFiles)(this.context, this.wsConfig, false, !message.value.build, message.value.project, message.value.build).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                            (0, project_1.addConfigFiles)(this.context, this.wsConfig, false, !message.value.build, message.value.project, message.value.build).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                             break;
                         }
                         case "addKConfigFile": {
-                            (0, project_1.addConfigFiles)(this.context, this.wsConfig, true, !message.value.build, message.value.project, message.value.build).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                            (0, project_1.addConfigFiles)(this.context, this.wsConfig, true, !message.value.build, message.value.project, message.value.build).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                             break;
                         }
                     }
@@ -541,11 +541,11 @@ class ProjectConfigView {
                 case "deleteFile": {
                     switch (message.value.cmd) {
                         case "removeOverlayFile": {
-                            (0, project_1.removeConfigFile)(this.context, this.wsConfig, false, !message.value.build, message.value.project, !message.value.isExtra, [message.value.filename], message.value.build).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                            (0, project_1.removeConfigFile)(this.context, this.wsConfig, false, !message.value.build, message.value.project, !message.value.isExtra, [message.value.filename], message.value.build).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                             break;
                         }
                         case "removeKConfigFile": {
-                            (0, project_1.removeConfigFile)(this.context, this.wsConfig, true, !message.value.build, message.value.project, !message.value.isExtra, [message.value.filename], message.value.build).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                            (0, project_1.removeConfigFile)(this.context, this.wsConfig, true, !message.value.build, message.value.project, !message.value.isExtra, [message.value.filename], message.value.build).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                             break;
                         }
                     }
@@ -557,7 +557,7 @@ class ProjectConfigView {
             }
         });
         this.setHtml("");
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }
 }
 exports.ProjectConfigView = ProjectConfigView;

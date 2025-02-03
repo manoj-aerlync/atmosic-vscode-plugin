@@ -99,7 +99,7 @@ class ActiveProjectView {
                     actions: this.buildActions,
                     label: "Build with Sysbuild",
                     description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "atmosic-ide.build-pristine" },
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.build-pristine" },
                 }, {
                     icons: {
                         leaf: 'project',
@@ -107,7 +107,7 @@ class ActiveProjectView {
 		    actions: this.buildActions,
                     label: "Build without sysbuild",
                     description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "atmosic-ide.buildNonSys" },
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.buildNonSys" },
                 },{
                     icons: {
                         leaf: 'project',
@@ -115,7 +115,7 @@ class ActiveProjectView {
                     actions: this.buildActions,
                     label: "Build SPE-NSPE Merge",
                     description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "atmosic-ide.buildNonSpeMcu" },
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.buildNonSpeMcu" },
                 },{
                     icons: {
                         leaf: 'project',
@@ -123,7 +123,7 @@ class ActiveProjectView {
                     actions: this.buildActions,
                     label: "Build without MCUBOOT",
                     description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "atmosic-ide.buildNonMcu" },
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.buildNonMcu" },
                 },{
                     icons: {
                         leaf: 'project',
@@ -131,14 +131,14 @@ class ActiveProjectView {
                     actions: this.buildActions,
                     label: "West Debug",
                     description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "atmosic-ide.westDebug" },
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.westDebug" },
                 },{
                     icons: {
                         leaf: 'chip',
                     },
                     label: "Flash",
                     description: activeRunner ? activeRunner.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "atmosic-ide.flash" },
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.flash" },
                 }
                 ];
             this.view.webview.postMessage(data);
@@ -193,7 +193,7 @@ class ActiveProjectView {
                     break;
                 }
                 case "startMenuConfig": {
-                    vscode.commands.executeCommand("atmosic-ide.start-menu-config");
+                    vscode.commands.executeCommand("zephyr-ide.start-menu-config");
                     break;
                 }
                 default:

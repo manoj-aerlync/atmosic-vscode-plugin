@@ -151,7 +151,7 @@ async function getVariable(config, variable_name, project_name, build_name) {
 exports.getVariable = getVariable;
 async function loadProjectsFromFile(config) {
     const configuration = await vscode.workspace.getConfiguration();
-    let useExternalJson = await configuration.get("atmosic-ide.use-zephyr-ide-json");
+    let useExternalJson = await configuration.get("zephyr-ide.use-zephyr-ide-json");
     if (useExternalJson) {
         const zephyrIdeSettingFilePath = path.join(config.rootPath, ".vscode/zephyr-ide.json");
         try {
@@ -175,7 +175,7 @@ async function loadProjectsFromFile(config) {
         }
     }
     else {
-        let temp = await configuration.get("atmosic-ide.projects");
+        let temp = await configuration.get("zephyr-ide.projects");
         temp = JSON.parse(JSON.stringify(temp));
         if (temp) {
             projectLoader(config, temp);
@@ -250,7 +250,7 @@ async function loadWorkspaceState(context) {
 }
 exports.loadWorkspaceState = loadWorkspaceState;
 function setDefaultTerminal(configuration, target, platform_name) {
-    configuration.update('terminal.integrated.defaultProfile.' + platform_name, "Atmosic IDE Terminal", target, false);
+    configuration.update('terminal.integrated.defaultProfile.' + platform_name, "Zephyr IDE Terminal", target, false);
 }
 exports.setDefaultTerminal = setDefaultTerminal;
 async function oneTimeWorkspaceSetup(context) {
@@ -331,8 +331,8 @@ async function setWorkspaceState(context, wsConfig) {
     });
     const configuration = await vscode.workspace.getConfiguration();
     const target = vscode.ConfigurationTarget.Workspace;
-    await configuration.update("atmosic-ide.use-zephyr-ide-json", true, target);
-    await configuration.update('atmosic-ide.projects', null, false);
+    await configuration.update("zephyr-ide.use-zephyr-ide-json", true, target);
+    await configuration.update('zephyr-ide.projects', null, false);
     await context.workspaceState.update("zephyr.env", wsConfig);
 }
 exports.setWorkspaceState = setWorkspaceState;
@@ -349,7 +349,7 @@ let toolsfoldername = ".zephyr_ide";
 function getToolsDir() {
     let toolsdir = path.join(os.homedir(), toolsfoldername);
     const configuration = vscode.workspace.getConfiguration();
-    let toolsDirFromFile = configuration.get("atmosic-ide.tools_directory");
+    let toolsDirFromFile = configuration.get("zephyr-ide.tools_directory");
     if (toolsDirFromFile != undefined || toolsDirFromFile != null) {
         toolsdir = toolsDirFromFile;
     }
@@ -393,7 +393,7 @@ async function checkIfToolsAvailable(context, wsConfig, globalConfig, solo = tru
     wsConfig.activeSetupState.toolsAvailable = false;
     saveSetupState(context, wsConfig, globalConfig);
     utils_1.output.show();
-    utils_1.output.appendLine("Atmosic IDE will now check if build tools are installed and available in system path.");
+    utils_1.output.appendLine("Zephyr IDE will now check if build tools are installed and available in system path.");
     utils_1.output.appendLine("Please follow the section Install Dependencies. https://docs.zephyrproject.org/latest/develop/getting_started/index.html#install-dependencies.");
     utils_1.output.appendLine("The remaining sections on that page will automatically be handled by the zephyr tools extension");
     utils_1.output.appendLine("For Windows you may use Chocolately, for debian you may use apt, and for macOS you may use Homebrew");
@@ -424,7 +424,7 @@ async function checkIfToolsAvailable(context, wsConfig, globalConfig, solo = tru
     wsConfig.activeSetupState.toolsAvailable = true;
     saveSetupState(context, wsConfig, globalConfig);
     if (solo) {
-        vscode.window.showInformationMessage("Atmosic IDE: Build Tools are available");
+        vscode.window.showInformationMessage("Zephyr IDE: Build Tools are available");
     }
     return true;
 }
@@ -432,7 +432,7 @@ exports.checkIfToolsAvailable = checkIfToolsAvailable;
 function workspaceInit(context, wsConfig, globalConfig, progressUpdate) {
     vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
-        title: 'Atmosic IDE Workspace Initialization',
+        title: 'Zephyr IDE Workspace Initialization',
         cancellable: false,
     }, async (progress, token) => {
         if (wsConfig.activeSetupState === undefined) {
@@ -443,7 +443,7 @@ function workspaceInit(context, wsConfig, globalConfig, progressUpdate) {
         if (!westInited) {
             westSelection = await (0, west_selector_1.westSelector)(context, wsConfig);
             if (westSelection === undefined || westSelection.failed) {
-                vscode.window.showErrorMessage("Atmosic IDE Initialization: Invalid West Init Selection");
+                vscode.window.showErrorMessage("Zephyr IDE Initialization: Invalid West Init Selection");
                 return;
             }
         }
@@ -452,21 +452,21 @@ function workspaceInit(context, wsConfig, globalConfig, progressUpdate) {
         await checkIfToolsAvailable(context, wsConfig, globalConfig, false);
         progressUpdate(wsConfig);
         if (!wsConfig.activeSetupState.toolsAvailable) {
-            vscode.window.showErrorMessage("Atmosic IDE Initialization: Missing Build Tools. See Output. Workspace Init Failed");
+            vscode.window.showErrorMessage("Zephyr IDE Initialization: Missing Build Tools. See Output. Workspace Init Failed");
             return;
         }
         progress.report({ message: "Setting Up Python Environment (2/5)", increment: 5 });
         await setupWestEnvironment(context, wsConfig, globalConfig, false);
         progressUpdate(wsConfig);
         if (!wsConfig.activeSetupState.pythonEnvironmentSetup) {
-            vscode.window.showErrorMessage("Atmosic IDE Initialization Step 2/5: Failed to Create Python Environment");
+            vscode.window.showErrorMessage("Zephyr IDE Initialization Step 2/5: Failed to Create Python Environment");
             return;
         }
         progress.report({ message: "Installing SDK (3/5)", increment: 20 });
         await (0, setup_toolchain_1.installSdk)(context, globalConfig, utils_1.output, true, toolchainSelection, false);
         progressUpdate(wsConfig);
         if (!globalConfig.sdkInstalled) {
-            vscode.window.showErrorMessage("Atmosic IDE Initialization Step 3/5: Sdk failed to install");
+            vscode.window.showErrorMessage("Zephyr IDE Initialization Step 3/5: Sdk failed to install");
             return;
         }
         progress.report({ message: "Initializing West Respository (4/5)", increment: 20 });
@@ -475,7 +475,7 @@ function workspaceInit(context, wsConfig, globalConfig, progressUpdate) {
             let result = await westInit(context, wsConfig, globalConfig, false, westSelection);
             progressUpdate(wsConfig);
             if (result === false) {
-                vscode.window.showErrorMessage("Atmosic IDE Initialization Step 4/5: West Failed to initialize");
+                vscode.window.showErrorMessage("Zephyr IDE Initialization Step 4/5: West Failed to initialize");
                 return;
             }
         }
@@ -483,12 +483,12 @@ function workspaceInit(context, wsConfig, globalConfig, progressUpdate) {
         await westUpdate(context, wsConfig, globalConfig, false);
         progressUpdate(wsConfig);
         if (!wsConfig.activeSetupState.westUpdated) {
-            vscode.window.showErrorMessage("Atmosic IDE Initialization Step 5/5: West Failed to update");
+            vscode.window.showErrorMessage("Zephyr IDE Initialization Step 5/5: West Failed to update");
             return;
         }
-        progress.report({ message: "Atmosic IDE Initialization Complete", increment: 100 });
+        progress.report({ message: "Zephyr IDE Initialization Complete", increment: 100 });
         progressUpdate(wsConfig);
-        vscode.window.showInformationMessage("Atmosic IDE Initialization Complete");
+        vscode.window.showInformationMessage("Zephyr IDE Initialization Complete");
     });
 }
 exports.workspaceInit = workspaceInit;
@@ -504,7 +504,7 @@ async function westInit(context, wsConfig, globalConfig, solo = true, westSelect
     }
     let westInited = await checkWestInit(wsConfig.activeSetupState);
     if (westInited) {
-        const selection = await vscode.window.showWarningMessage('Atmosic IDE: West already initialized. Call West Update instead. If you would like to reinitialize the .west folder will be deleted', 'Reinitialize', 'Cancel');
+        const selection = await vscode.window.showWarningMessage('Zephyr IDE: West already initialized. Call West Update instead. If you would like to reinitialize the .west folder will be deleted', 'Reinitialize', 'Cancel');
         if (selection !== 'Reinitialize') {
             return true;
         }
@@ -539,7 +539,7 @@ async function westInit(context, wsConfig, globalConfig, solo = true, westSelect
         cmd = `west init -l ${westSelection.path} ${westSelection.additionalArgs}`;
     }
     wsConfig.activeSetupState.zephyrDir = "";
-    let westInitRes = await (0, utils_1.executeTaskHelper)("Atmosic IDE: West Init", cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
+    let westInitRes = await (0, utils_1.executeTaskHelper)("Zephyr IDE: West Init", cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
     if (!westInitRes) {
         vscode.window.showErrorMessage("West Init Failed. See terminal for error information.");
     }
@@ -565,10 +565,10 @@ async function setupWestEnvironment(context, wsConfig, globalConfig, solo = true
     let westEnvironmentSetup = 'Reinitialize';
     if (wsConfig.activeSetupState.pythonEnvironmentSetup || env_exists) {
         if (env_exists) {
-            westEnvironmentSetup = await vscode.window.showWarningMessage('Atmosic IDE: Python Env already exists', 'Use Existing', 'Reinitialize', 'Cancel');
+            westEnvironmentSetup = await vscode.window.showWarningMessage('Zephyr IDE: Python Env already exists', 'Use Existing', 'Reinitialize', 'Cancel');
         }
         else {
-            westEnvironmentSetup = await vscode.window.showWarningMessage('Atmosic IDE: Python Env already setup', 'Reinitialize', 'Cancel');
+            westEnvironmentSetup = await vscode.window.showWarningMessage('Zephyr IDE: Python Env already setup', 'Reinitialize', 'Cancel');
         }
         if (westEnvironmentSetup !== 'Reinitialize' && westEnvironmentSetup !== 'Use Existing') {
             return;
@@ -626,7 +626,7 @@ async function setupWestEnvironment(context, wsConfig, globalConfig, solo = true
         saveSetupState(context, wsConfig, globalConfig);
         progress.report({ increment: 100 });
         if (solo) {
-            vscode.window.showInformationMessage(`Atmosic IDE: West Python Environment Setup!`);
+            vscode.window.showInformationMessage(`Zephyr IDE: West Python Environment Setup!`);
         }
     });
 }
@@ -638,9 +638,9 @@ async function westUpdate(context, wsConfig, globalConfig, solo = true) {
     }
     // Get the active workspace root path
     if (solo) {
-        vscode.window.showInformationMessage(`Atmosic IDE: West Update`);
+        vscode.window.showInformationMessage(`Zephyr IDE: West Update`);
     }
-    let westUpdateRes = await (0, utils_1.executeTaskHelper)("Atmosic IDE: West Update", `west update`, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
+    let westUpdateRes = await (0, utils_1.executeTaskHelper)("Zephyr IDE: West Update", `west update`, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
     if (!westUpdateRes) {
         vscode.window.showErrorMessage("West Update Failed. Check output for more info.");
         return false;
@@ -665,13 +665,13 @@ async function westUpdate(context, wsConfig, globalConfig, solo = true) {
         return false;
     }
     cmd = `pip install -r ${path.join(wsConfig.activeSetupState.zephyrDir, "scripts", "requirements.txt")}`;
-    let pipInstallRes = await (0, utils_1.executeTaskHelper)("Atmosic IDE: West Update", cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
+    let pipInstallRes = await (0, utils_1.executeTaskHelper)("Zephyr IDE: West Update", cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
     if (!pipInstallRes) {
         vscode.window.showErrorMessage("West Update Failed. Error installing python requirements.");
         return false;
     }
     cmd = `pip install -U dtsh`;
-    let dtshInstallRes = await (0, utils_1.executeTaskHelper)("Atmosic IDE: West Update", cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
+    let dtshInstallRes = await (0, utils_1.executeTaskHelper)("Zephyr IDE: West Update", cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState.setupPath);
     if (!dtshInstallRes) {
         vscode.window.showWarningMessage("Failed to install dtsh");
     }
@@ -680,7 +680,7 @@ async function westUpdate(context, wsConfig, globalConfig, solo = true) {
     saveSetupState(context, wsConfig, globalConfig);
     setWorkspaceState(context, wsConfig);
     if (solo) {
-        vscode.window.showInformationMessage("Atmosic IDE: West Update Complete");
+        vscode.window.showInformationMessage("Zephyr IDE: West Update Complete");
     }
     return true;
 }

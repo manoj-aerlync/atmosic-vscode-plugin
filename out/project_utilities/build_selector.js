@@ -58,7 +58,7 @@ async function buildSelector(context, setupState, rootPath) {
         let zephyrBoardDir;
         if (setupState.zephyrDir) {
             zephyrBoardDir = path.join(setupState.zephyrDir, `boards`);
-            boardDirectories.push('Atmosic Directory Only');
+            boardDirectories.push('Zephyr Directory Only');
         }
         console.log("Boards dir: " + boardDirectories);
         boardDirectories.push("Select Other Folder");
@@ -96,7 +96,7 @@ async function buildSelector(context, setupState, rootPath) {
                 return;
             }
         }
-        else if (pick.label === 'Atmosic Directory Only') {
+        else if (pick.label === 'Zephyr Directory Only') {
             state.relBoardDir = undefined;
         }
         return (input) => inputBoardName(input, state);
@@ -159,7 +159,7 @@ async function buildSelector(context, setupState, rootPath) {
         if (!res.stdout) {
             utils_1.output.append(prevError);
             utils_1.output.append(res.stderr);
-            vscode.window.showErrorMessage("Failed to run west boards command. See Atmosic IDE Output for error message");
+            vscode.window.showErrorMessage("Failed to run west boards command. See Zephyr IDE Output for error message");
             return;
         }
         let allBoardData = res.stdout.split(/\r?\n/);

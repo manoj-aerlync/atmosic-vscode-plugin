@@ -113,7 +113,7 @@ async function readAllDirectories(directory, projectList, relativePath = '') {
 }
 async function createNewProjectFromSample(context, wsConfig) {
     if (!wsConfig.activeSetupState || !wsConfig.activeSetupState.zephyrDir) {
-        vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` first.");
+        vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` first.");
         return;
     }
     const samplesDir = path.join(wsConfig.activeSetupState.zephyrDir, 'samples');
@@ -483,7 +483,7 @@ async function setActive(wsConfig, project, build, runner) {
                 wsConfig.projectStates[wsConfig.activeProject].buildStates[build].activeRunner = runner;
             }
         }
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }
 }
 exports.setActive = setActive;

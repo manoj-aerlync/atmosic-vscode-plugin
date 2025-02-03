@@ -1,7 +1,7 @@
 {
-	"name": "atmosic-ide",
-	"displayName": "Atmosic IDE",
-	"description": "A VS Code extension for Atmosic IDE",
+	"name": "zephyr-ide",
+	"displayName": "Zephyr IDE",
+	"description": "A VS Code extension for Zephyr IDE",
 	"version": "1.7.2",
   "icon": "media/logo.png",
   "keywords": [
@@ -24,47 +24,47 @@
     "Other"
   ],
   "activationEvents": [
-		"atmosic-ide.get-active-project-name",
-		"atmosic-ide.get-active-project-path",
-		"atmosic-ide.get-active-build-path",
-		"atmosic-ide.get-active-build-board-path",
-		"atmosic-ide.select-active-build-path",
-		"atmosic-ide.get-gdb-path",
-		"atmosic-ide.get-toolchain-path",
-		"atmosic-ide.get-zephyr-ide-json-variable",
-		"atmosic-ide.get-active-project-variable",
-		"atmosic-ide.get-active-build-variable",
-		"atmosic-ide.get-active-board-name",
+		"zephyr-ide.get-active-project-name",
+		"zephyr-ide.get-active-project-path",
+		"zephyr-ide.get-active-build-path",
+		"zephyr-ide.get-active-build-board-path",
+		"zephyr-ide.select-active-build-path",
+		"zephyr-ide.get-gdb-path",
+		"zephyr-ide.get-toolchain-path",
+		"zephyr-ide.get-zephyr-ide-json-variable",
+		"zephyr-ide.get-active-project-variable",
+		"zephyr-ide.get-active-build-variable",
+		"zephyr-ide.get-active-board-name",
     "workspaceContains:.vscode/zephyr-ide.json"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "taskDefinitions": [
       {
-				"type": "atmosic-ide"
+				"type": "zephyr-ide"
       }
     ],
     "configuration": {
       "type": "object",
-			"title": "Atmosic IDE: Projects",
+			"title": "Zephyr IDE: Projects",
       "properties": {
-				"atmosic-ide.projects": {
+				"zephyr-ide.projects": {
           "type": [
             "any",
             "null",
             "object"
           ],
           "default": null,
-					"description": "[deprecated] Atmosic IDE Project Configuration."
+					"description": "[deprecated] Zephyr IDE Project Configuration."
         },
-				"atmosic-ide.use-zephyr-ide-json": {
+				"zephyr-ide.use-zephyr-ide-json": {
           "type": [
             "boolean"
           ],
           "default": false,
-					"description": "[deprecated] Allows use of separater json file to store Atmosic IDE Project Configuration."
+					"description": "[deprecated] Allows use of separater json file to store Zephyr IDE Project Configuration."
         },
-				"atmosic-ide.tools_directory": {
+				"zephyr-ide.tools_directory": {
           "type": [
             "string"
           ],
@@ -75,12 +75,12 @@
     },
     "keybindings": [
       {
-				"command": "atmosic-ide.build",
+				"command": "zephyr-ide.build",
         "key": "ctrl+alt+B",
         "mac": "ctrl+alt+B"
       },
       {
-				"command": "atmosic-ide.flash",
+				"command": "zephyr-ide.flash",
         "key": "ctrl+alt+p",
         "mac": "ctrl+alt+p"
       }
@@ -88,7 +88,7 @@
     "viewsWelcome": [
       {
         "view": "welcome",
-				"contents": "In order to use the Atmosic IDE Extension it needs to be fully Initialized.\n[Initialize Extension](command:atmosic-ide.setup-workspace-init)\n Elements of this process may be run individually as well\n This is a 5 step process that can be run by git features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about how to use git and source control in VS Code [read our docs](https://aka.ms/vscode-scm).",
+				"contents": "In order to use the Zephyr IDE Extension it needs to be fully Initialized.\n[Initialize Extension](command:zephyr-ide.setup-workspace-init)\n Elements of this process may be run individually as well\n This is a 5 step process that can be run by git features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about how to use git and source control in VS Code [read our docs](https://aka.ms/vscode-scm).",
         "when": "config.git.enabled && git.state == initialized && workbenchState == empty"
       }
     ],
@@ -96,7 +96,7 @@
       "activitybar": [
         {
 					"id": "atm",
-					"title": "Atmosic IDE",
+					"title": "Zephyr IDE",
 					"icon": "media/icon26.svg"
         }
       ]
@@ -104,283 +104,283 @@
     "menus": {
       "view/title": [
         {
-					"command": "atmosic-ide.add-project",
+					"command": "zephyr-ide.add-project",
           "group": "navigation",
-					"when": "view == atmosicIdeProjects"
+					"when": "view == zephyrIdeProjects"
         },
         {
-					"command": "atmosic-ide.create-project",
+					"command": "zephyr-ide.create-project",
           "group": "navigation",
-					"when": "view == atmosicIdeProjects"
+					"when": "view == zephyrIdeProjects"
         },
         {
-					"command": "atmosic-ide.load-projects-from-file",
+					"command": "zephyr-ide.load-projects-from-file",
           "group": "navigation",
-					"when": "view == atmosicIdeProjects"
+					"when": "view == zephyrIdeProjects"
         },
         {
-					"command": "atmosic-ide.save-projects-to-file",
+					"command": "zephyr-ide.save-projects-to-file",
           "group": "navigation",
-					"when": "view == atmosicIdeProjects"
+					"when": "view == zephyrIdeProjects"
         },
         {
-					"command": "atmosic-ide.disable-automatic-project-target",
-					"when": "view == atmosicIdeActiveProject"
+					"command": "zephyr-ide.disable-automatic-project-target",
+					"when": "view == zephyrIdeActiveProject"
         },
         {
-					"command": "atmosic-ide.enable-automatic-project-target",
-					"when": "view == atmosicIdeActiveProject"
+					"command": "zephyr-ide.enable-automatic-project-target",
+					"when": "view == zephyrIdeActiveProject"
         }
       ]
     },
     "views": {
 			"atm": [
         {
-					"id": "atmosicIdeExtensionSetup",
+					"id": "zephyrIdeExtensionSetup",
           "name": "Extension Setup",
           "icon": "media/logo_small.jpg",
-					"contextualTitle": "Atmosic IDE",
+					"contextualTitle": "Zephyr IDE",
           "type": "webview"
         },
         {
-					"id": "atmosicIdeProjects",
+					"id": "zephyrIdeProjects",
           "name": "Projects",
           "icon": "media/logo_small.jpg",
-					"contextualTitle": "Atmosic IDE Projects",
+					"contextualTitle": "Zephyr IDE Projects",
           "type": "webview"
         },
         {
-					"id": "atmosicIdeProjectStatus",
+					"id": "zephyrIdeProjectStatus",
           "name": "Project Config",
           "icon": "media/logo_small.jpg",
-					"contextualTitle": "Atmosic IDE Projects",
+					"contextualTitle": "Zephyr IDE Projects",
           "type": "webview"
         },
         {
-					"id": "atmosicIdeActiveProject",
+					"id": "zephyrIdeActiveProject",
           "name": "Active Project",
           "icon": "media/logo_small.jpg",
-					"contextualTitle": "Atmosic IDE Active Project",
+					"contextualTitle": "Zephyr IDE Active Project",
           "type": "webview"
         }
       ]
     },
     "commands": [
       {
-				"command": "atmosic-ide.init-workspace",
-				"title": "Atmosic IDE: Initialize Workspace"
+				"command": "zephyr-ide.init-workspace",
+				"title": "Zephyr IDE: Initialize Workspace"
       },
       {
-				"command": "atmosic-ide.check-build-dependencies",
-				"title": "Atmosic IDE: Setup Check Build Dependencies Available"
+				"command": "zephyr-ide.check-build-dependencies",
+				"title": "Zephyr IDE: Setup Check Build Dependencies Available"
       },
       {
-				"command": "atmosic-ide.west-environment",
-				"title": "Atmosic IDE: Setup West Environment"
+				"command": "zephyr-ide.west-environment",
+				"title": "Zephyr IDE: Setup West Environment"
       },
       {
-				"command": "atmosic-ide.install-sdk",
-				"title": "Atmosic IDE: Install SDK"
+				"command": "zephyr-ide.install-sdk",
+				"title": "Zephyr IDE: Install SDK"
       },
       {
-				"command": "atmosic-ide.west-init",
-				"title": "Atmosic IDE: West Init"
+				"command": "zephyr-ide.west-init",
+				"title": "Zephyr IDE: West Init"
       },
       {
-				"command": "atmosic-ide.west-update",
-				"title": "Atmosic IDE: West Update"
+				"command": "zephyr-ide.west-update",
+				"title": "Zephyr IDE: West Update"
       },
       {
-				"command": "atmosic-ide.reset-extension",
-				"title": "Atmosic IDE: Reset Extension"
+				"command": "zephyr-ide.reset-extension",
+				"title": "Zephyr IDE: Reset Extension"
       },
       {
-				"command": "atmosic-ide.clear-projects",
-				"title": "Atmosic IDE: Clear Projects"
+				"command": "zephyr-ide.clear-projects",
+				"title": "Zephyr IDE: Clear Projects"
       },
       {
-				"command": "atmosic-ide.load-projects-from-file",
-				"title": "Atmosic IDE: Load Projects From File",
+				"command": "zephyr-ide.load-projects-from-file",
+				"title": "Zephyr IDE: Load Projects From File",
         "icon": "$(refresh)"
       },
       {
-				"command": "atmosic-ide.save-projects-to-file",
-				"title": "Atmosic IDE: Save Projects To File",
+				"command": "zephyr-ide.save-projects-to-file",
+				"title": "Zephyr IDE: Save Projects To File",
         "icon": "$(save)"
       },
       {
-				"command": "atmosic-ide.disable-automatic-project-target",
-				"title": "Atmosic IDE: Disable Automatic Active Project Targeting"
+				"command": "zephyr-ide.disable-automatic-project-target",
+				"title": "Zephyr IDE: Disable Automatic Active Project Targeting"
       },
       {
-				"command": "atmosic-ide.enable-automatic-project-target",
-				"title": "Atmosic IDE: Enable Automatic Active Project Targeting"
+				"command": "zephyr-ide.enable-automatic-project-target",
+				"title": "Zephyr IDE: Enable Automatic Active Project Targeting"
       },
       {
-				"command": "atmosic-ide.create-project",
-				"title": "Atmosic IDE: Create Project From Template",
+				"command": "zephyr-ide.create-project",
+				"title": "Zephyr IDE: Create Project From Template",
         "icon": "$(add)"
       },
       {
-				"command": "atmosic-ide.add-project",
-				"title": "Atmosic IDE: Add Project",
+				"command": "zephyr-ide.add-project",
+				"title": "Zephyr IDE: Add Project",
         "icon": "$(new-folder)"
       },
       {
-				"command": "atmosic-ide.remove-project",
-				"title": "Atmosic IDE: Remove Project"
+				"command": "zephyr-ide.remove-project",
+				"title": "Zephyr IDE: Remove Project"
       },
       {
-				"command": "atmosic-ide.add-project-config-files",
-				"title": "Atmosic IDE: Add Project KConfig Files"
+				"command": "zephyr-ide.add-project-config-files",
+				"title": "Zephyr IDE: Add Project KConfig Files"
       },
       {
-				"command": "atmosic-ide.remove-project-config-files",
-				"title": "Atmosic IDE: Remove Project KConfig Files"
+				"command": "zephyr-ide.remove-project-config-files",
+				"title": "Zephyr IDE: Remove Project KConfig Files"
       },
       {
-				"command": "atmosic-ide.add-project-overlay-files",
-				"title": "Atmosic IDE: Add Project Overlay Files"
+				"command": "zephyr-ide.add-project-overlay-files",
+				"title": "Zephyr IDE: Add Project Overlay Files"
       },
       {
-				"command": "atmosic-ide.remove-project-overlay-files",
-				"title": "Atmosic IDE: Remove Project Overlay Files"
+				"command": "zephyr-ide.remove-project-overlay-files",
+				"title": "Zephyr IDE: Remove Project Overlay Files"
       },
       {
-				"command": "atmosic-ide.set-active-project",
-				"title": "Atmosic IDE: Set Active Project"
+				"command": "zephyr-ide.set-active-project",
+				"title": "Zephyr IDE: Set Active Project"
       },
       {
-				"command": "atmosic-ide.add-build",
-				"title": "Atmosic IDE: Add Build Configuration"
+				"command": "zephyr-ide.add-build",
+				"title": "Zephyr IDE: Add Build Configuration"
       },
       {
-				"command": "atmosic-ide.remove-build",
-				"title": "Atmosic IDE: Remove Build"
+				"command": "zephyr-ide.remove-build",
+				"title": "Zephyr IDE: Remove Build"
       },
       {
-				"command": "atmosic-ide.add-build-config-files",
-				"title": "Atmosic IDE: Add Build KConfig Files"
+				"command": "zephyr-ide.add-build-config-files",
+				"title": "Zephyr IDE: Add Build KConfig Files"
       },
       {
-				"command": "atmosic-ide.remove-build-config-files",
-				"title": "Atmosic IDE: Remove Build KConfig Files"
+				"command": "zephyr-ide.remove-build-config-files",
+				"title": "Zephyr IDE: Remove Build KConfig Files"
       },
       {
-				"command": "atmosic-ide.add-build-overlay-files",
-				"title": "Atmosic IDE: Add Build Overlay Files"
+				"command": "zephyr-ide.add-build-overlay-files",
+				"title": "Zephyr IDE: Add Build Overlay Files"
       },
       {
-				"command": "atmosic-ide.remove-build-overlay-files",
-				"title": "Atmosic IDE: Remove Build Overlay Files"
+				"command": "zephyr-ide.remove-build-overlay-files",
+				"title": "Zephyr IDE: Remove Build Overlay Files"
       },
       {
-				"command": "atmosic-ide.set-active-build",
-				"title": "Atmosic IDE: Set Active Build"
+				"command": "zephyr-ide.set-active-build",
+				"title": "Zephyr IDE: Set Active Build"
       },
       {
-				"command": "atmosic-ide.add-runner",
-				"title": "Atmosic IDE: Add Runner"
+				"command": "zephyr-ide.add-runner",
+				"title": "Zephyr IDE: Add Runner"
       },
       {
-				"command": "atmosic-ide.remove-runner",
-				"title": "Atmosic IDE: Remove Runner"
+				"command": "zephyr-ide.remove-runner",
+				"title": "Zephyr IDE: Remove Runner"
       },
       {
-				"command": "atmosic-ide.set-active-runner",
-				"title": "Atmosic IDE: Set Active Runner"
+				"command": "zephyr-ide.set-active-runner",
+				"title": "Zephyr IDE: Set Active Runner"
       },
       {
-				"command": "atmosic-ide.change-debug-launch-for-build",
-				"title": "Atmosic IDE: Change Debug Launch Configuration For Build"
+				"command": "zephyr-ide.change-debug-launch-for-build",
+				"title": "Zephyr IDE: Change Debug Launch Configuration For Build"
       },
       {
-				"command": "atmosic-ide.change-build-debug-launch-for-build",
-				"title": "Atmosic IDE: Change Build and Debug Launch Configuration For Build"
+				"command": "zephyr-ide.change-build-debug-launch-for-build",
+				"title": "Zephyr IDE: Change Build and Debug Launch Configuration For Build"
       },
       {
-				"command": "atmosic-ide.change-debug-attach-launch-for-build",
-				"title": "Atmosic IDE: Change Debug Attach Launch Configuration For Build"
+				"command": "zephyr-ide.change-debug-attach-launch-for-build",
+				"title": "Zephyr IDE: Change Debug Attach Launch Configuration For Build"
       },
       {
-				"command": "atmosic-ide.build-pristine",
-				"title": "Atmosic IDE: Build Pristine"
+				"command": "zephyr-ide.build-pristine",
+				"title": "Zephyr IDE: Build Pristine"
       },
       {
-				"command": "atmosic-ide.build",
-				"title": "Atmosic IDE: Build"
+				"command": "zephyr-ide.build",
+				"title": "Zephyr IDE: Build"
       },
       {
-				"command": "atmosic-ide.buildNonSys",
-				"title": "Atmosic IDE: Build without Sysbuild"
+				"command": "zephyr-ide.buildNonSys",
+				"title": "Zephyr IDE: Build without Sysbuild"
       },
       {
-				"command": "atmosic-ide.buildNonSpeMcu",
-				"title": "Atmosic IDE: Build without SPE-MCUBOOT"
+				"command": "zephyr-ide.buildNonSpeMcu",
+				"title": "Zephyr IDE: Build without SPE-MCUBOOT"
       },
       {
-				"command": "atmosic-ide.buildNonMcu",
-				"title": "Atmosic IDE: Build without MCUBOOT"
+				"command": "zephyr-ide.buildNonMcu",
+				"title": "Zephyr IDE: Build without MCUBOOT"
       },
       {
-				"command": "atmosic-ide.westDebug",
-				"title": "Atmosic IDE: west debug"
+				"command": "zephyr-ide.westDebug",
+				"title": "Zephyr IDE: west debug"
       },
       {
-				"command": "atmosic-ide.flash",
-				"title": "Atmosic IDE: Flash"
+				"command": "zephyr-ide.flash",
+				"title": "Zephyr IDE: Flash"
       },
       {
-				"command": "atmosic-ide.clean",
-				"title": "Atmosic IDE: Clean"
+				"command": "zephyr-ide.clean",
+				"title": "Zephyr IDE: Clean"
       },
       {
-				"command": "atmosic-ide.start-menu-config",
-				"title": "Atmosic IDE: Start Menu Config"
+				"command": "zephyr-ide.start-menu-config",
+				"title": "Zephyr IDE: Start Menu Config"
       },
       {
-				"command": "atmosic-ide.start-gui-config",
-				"title": "Atmosic IDE: Start GUI Config"
+				"command": "zephyr-ide.start-gui-config",
+				"title": "Zephyr IDE: Start GUI Config"
       },
       {
-				"command": "atmosic-ide.run-ram-report",
-				"title": "Atmosic IDE: Run RAM Report"
+				"command": "zephyr-ide.run-ram-report",
+				"title": "Zephyr IDE: Run RAM Report"
       },
       {
-				"command": "atmosic-ide.run-rom-report",
-				"title": "Atmosic IDE: Run ROM Report"
+				"command": "zephyr-ide.run-rom-report",
+				"title": "Zephyr IDE: Run ROM Report"
       },
       {
-				"command": "atmosic-ide.start-dtsh-shell",
-				"title": "Atmosic IDE: Start DTSh Shell"
+				"command": "zephyr-ide.start-dtsh-shell",
+				"title": "Zephyr IDE: Start DTSh Shell"
       },
       {
-				"command": "atmosic-ide.modify-build-arguments",
-				"title": "Atmosic IDE: Modify Build Arguments"
+				"command": "zephyr-ide.modify-build-arguments",
+				"title": "Zephyr IDE: Modify Build Arguments"
       },
       {
-				"command": "atmosic-ide.update-web-view",
-				"title": "Atmosic IDE: Reload Web Views"
+				"command": "zephyr-ide.update-web-view",
+				"title": "Zephyr IDE: Reload Web Views"
       },
       {
-				"command": "atmosic-ide.use-local-zephyr-install",
-				"title": "Atmosic IDE: Use current workspace for Atmosic Install"
+				"command": "zephyr-ide.use-local-zephyr-install",
+				"title": "Zephyr IDE: Use current workspace for Zephyr Install"
       },
       {
-				"command": "atmosic-ide.use-external-zephyr-install",
-				"title": "Atmosic IDE: Use an External Folder for Atmosic Install"
+				"command": "zephyr-ide.use-external-zephyr-install",
+				"title": "Zephyr IDE: Use an External Folder for Zephyr Install"
       },
       {
-				"command": "atmosic-ide.reset-zephyr-install-selection",
-				"title": "Atmosic IDE: Reset Atmosic Install Selection"
+				"command": "zephyr-ide.reset-zephyr-install-selection",
+				"title": "Zephyr IDE: Reset Zephyr Install Selection"
       },
       {
-				"command": "atmosic-ide.mark-west-as-ready",
-				"title": "Atmosic IDE: Mark West as Ready"
+				"command": "zephyr-ide.mark-west-as-ready",
+				"title": "Zephyr IDE: Mark West as Ready"
       },
       {
-				"command": "atmosic-ide.shell_test",
-				"title": "Atmosic IDE: Shell Test"
+				"command": "zephyr-ide.shell_test",
+				"title": "Zephyr IDE: Shell Test"
       }
     ],
     "terminal": {
@@ -388,19 +388,19 @@
         {
           "id": "zephyr-ide.terminal-profile",
           "icon": "terminal",
-					"title": "Atmosic IDE Terminal"
+					"title": "Zephyr IDE Terminal"
         }
       ]
     },
     "debuggers": [
       {
         "type": "zephyr-ide",
-				"label": "Atmosic IDE",
+				"label": "Zephyr IDE",
         "initialConfigurations": [
           {
-						"name": "Atmosic IDE: Debug",
+						"name": "Zephyr IDE: Debug",
             "cwd": "${workspaceFolder}",
-						"gdbPath": "${command:atmosic-ide.get-gdb-path}",
+						"gdbPath": "${command:zephyr-ide.get-gdb-path}",
             "executable": "${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf",
             "request": "launch",
             "type": "cortex-debug",
@@ -413,9 +413,9 @@
             ]
           },
           {
-						"name": "Atmosic IDE: Attach",
+						"name": "Zephyr IDE: Attach",
             "cwd": "${workspaceFolder}",
-						"gdbPath": "${command:atmosic-ide.get-gdb-path}",
+						"gdbPath": "${command:zephyr-ide.get-gdb-path}",
             "executable": "${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf",
             "request": "launch",
             "type": "cortex-debug",
@@ -430,12 +430,12 @@
         ],
         "configurationSnippets": [
           {
-						"label": "Atmosic IDE: Debug",
+						"label": "Zephyr IDE: Debug",
             "description": "Basic Cortex Debug example with blackmagic probe",
             "body": {
-							"name": "Atmosic IDE: Debug",
+							"name": "Zephyr IDE: Debug",
               "cwd": "^\"\\${workspaceFolder}\"",
-							"gdbPath": "^\"\\${command:atmosic-ide.get-gdb-path}\"",
+							"gdbPath": "^\"\\${command:zephyr-ide.get-gdb-path}\"",
               "executable": "^\"\\${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf\"",
               "request": "launch",
               "type": "cortex-debug",
@@ -449,12 +449,12 @@
             }
           },
           {
-						"label": "Atmosic IDE: Attach",
+						"label": "Zephyr IDE: Attach",
             "description": "Basic Cortex Debug attach example with blackmagic probe",
             "body": {
-							"name": "Atmosic IDE: Attach",
+							"name": "Zephyr IDE: Attach",
               "cwd": "^\"\\${workspaceFolder}\"",
-							"gdbPath": "^\"\\${command:atmosic-ide.get-gdb-path}\"",
+							"gdbPath": "^\"\\${command:zephyr-ide.get-gdb-path}\"",
               "executable": "^\"\\${command:zephyr-ide.get-active-build-path}/zephyr/zephyr.elf\"",
               "request": "launch",
               "type": "cortex-debug",
@@ -468,12 +468,12 @@
             }
           },
           {
-						"label": "Atmosic IDE: Debug Select",
+						"label": "Zephyr IDE: Debug Select",
             "description": "An example where a user will select a build each time the configuration is run",
             "body": {
-							"name": "Atmosic IDE: Debug Select",
+							"name": "Zephyr IDE: Debug Select",
               "cwd": "^\"\\${workspaceFolder}\"",
-							"gdbPath": "^\"\\${command:atmosic-ide.get-gdb-path}\"",
+							"gdbPath": "^\"\\${command:zephyr-ide.get-gdb-path}\"",
               "executable": "^\"\\${command:zephyr-ide.select-active-build-path}/zephyr/zephyr.elf\"",
               "request": "launch",
               "type": "cortex-debug",

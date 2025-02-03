@@ -91,7 +91,7 @@ async function buildHelper(context, wsConfig, pristine) {
         return await build(wsConfig, project, project.buildConfigs[buildName], pristine);
     }
     else {
-        vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` command first.");
+        vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` command first.");
     }
 }
 exports.buildHelper = buildHelper;
@@ -112,7 +112,7 @@ async function buildByName(wsConfig, pristine, projectName, buildName, isMenuCon
         }
     }
     else {
-        vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` command first.");
+        vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` command first.");
     }
 }
 exports.buildByName = buildByName;
@@ -171,7 +171,7 @@ async function build(wsConfig, project, build, pristine) {
             cmd = cmd + ` -DEXTRA_DTC_OVERLAY_FILE='${overlayFileString}' `;
         }
     }
-    let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Building ${build.name} from project: ${project.name}`);
     let ret = await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -203,12 +203,12 @@ async function buildNonSysBuild(wsConfig, isMenuConfig, project, build) {
 	let cmd;
 
 	if (build.board.startsWith("ATMEVK-3330")) {
-		cmd = `west build -p -s bootloader/mcuboot/boot/zephyr -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr -- \  -DCONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256=y \ -DCONFIG_BOOT_MAX_IMG_SECTORS=512 -DDTC_OVERLAY_FILE="$PWD/zephyr/boards/atmosic/atm33evk/${build.board.split('/')[0]}_mcuboot_bl.overlay" && west build -p -s openair/samples/spe -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/openair/samples/spe -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_GENERATE_UNSIGNED_IMAGE=n -DDTS_EXTRA_CPPFLAGS=-DATMWSTK=LL && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}@mcuboot//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_SIGNATURE_KEY_FILE=\\"bootloader/mcuboot/root-ec-p256.pem\\" -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" `;
+		cmd = `west build -p -s bootloader/mcuboot/boot/zephyr -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr -- \  -DCONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256=y \ -DCONFIG_BOOT_MAX_IMG_SECTORS=512 -DDTC_OVERLAY_FILE="$PWD/zephyr/boards/zephyr/atm33evk/${build.board.split('/')[0]}_mcuboot_bl.overlay" && west build -p -s openair/samples/spe -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/openair/samples/spe -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_GENERATE_UNSIGNED_IMAGE=n -DDTS_EXTRA_CPPFLAGS=-DATMWSTK=LL && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}@mcuboot//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_SIGNATURE_KEY_FILE=\\"bootloader/mcuboot/root-ec-p256.pem\\" -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" `;
 	}
 	if (build.board.startsWith("ATMEVK-3430")) {
-		cmd = `west build -p -s bootloader/mcuboot/boot/zephyr -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr -- \  -DCONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256=y \ -DCONFIG_BOOT_MAX_IMG_SECTORS=512 -DDTC_OVERLAY_FILE="$PWD/zephyr/boards/atmosic/atm34evk/${build.board.split('/')[0]}_mcuboot_bl.overlay" && west build -p -s openair/samples/spe -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/openair/samples/spe -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_GENERATE_UNSIGNED_IMAGE=n -DDTS_EXTRA_CPPFLAGS=-DATMWSTK=LL && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}@mcuboot//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_SIGNATURE_KEY_FILE=\\"bootloader/mcuboot/root-ec-p256.pem\\" -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" `;
+		cmd = `west build -p -s bootloader/mcuboot/boot/zephyr -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr -- \  -DCONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256=y \ -DCONFIG_BOOT_MAX_IMG_SECTORS=512 -DDTC_OVERLAY_FILE="$PWD/zephyr/boards/zephyr/atm34evk/${build.board.split('/')[0]}_mcuboot_bl.overlay" && west build -p -s openair/samples/spe -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/openair/samples/spe -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_GENERATE_UNSIGNED_IMAGE=n -DDTS_EXTRA_CPPFLAGS=-DATMWSTK=LL && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}@mcuboot//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_SIGNATURE_KEY_FILE=\\"bootloader/mcuboot/root-ec-p256.pem\\" -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" `;
 	}
-	let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+	let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -238,7 +238,7 @@ async function buildNonMcuboot(wsConfig, isMenuConfig, project, build) {
     }       
     let cmd = `west build -p -s openair/samples/spe -b ${build.board.split('/')[0]} -d build/${build.board.split('/')[0]}/openair/samples/spe && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\"`;
 
-    let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -268,7 +268,7 @@ async function buildNonSpeMcuboot(wsConfig, isMenuConfig, project, build) {
     }       
     let cmd = `west build -p -s openair/samples/spe -b ${build.board.split('/')[0]} -d build/${build.board.split('/')[0]}/openair/samples/spe && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" -DCONFIG_MERGE_SPE_NSPE=y`;
 
-    let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -298,9 +298,9 @@ async function westDebug(wsConfig, isNonSysBuild, project, build) {
         buildFsDir = fs.readdirSync(buildFolder);
     }       
     
-    let cmd = `west debug --build-dir build/${build.board.split('/')[0]}_ns/${project.rel_path} --openocd ./modules/hal/atmosic_lib/tools/openocd/bin/Linux/openocd `;
+    let cmd = `west debug --build-dir build/${build.board.split('/')[0]}_ns/${project.rel_path} --openocd ./modules/hal/zephyr_lib/tools/openocd/bin/Linux/openocd `;
 
-    let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -330,7 +330,7 @@ async function buildMenuConfig(wsConfig, isMenuConfig, project, build) {
     }
         await vscode.window.showErrorMessage(`Run a Build or Build Pristine before running Menu/GUI Config.${buildFolder}`);
     let cmd = `west build -t ${isMenuConfig ? "menuconfig" : "guiconfig"} ${projectFolder} --build-dir build/`;
-    let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running MenuConfig ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -363,7 +363,7 @@ async function buildRamRomReport(wsConfig, isRamReport, project, build) {
         return;
     }
     let cmd = `west build -t ${isRamReport ? "ram_report" : "rom_report"} ${projectFolder} --build-dir ${buildFolder} `;
-    let taskName = "Atmosic IDE Build: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running ${isRamReport ? "RAM" : "ROM"} Report ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
     regenerateCompileCommands(wsConfig);
@@ -386,7 +386,7 @@ async function runDtshShell(wsConfig, project, build) {
         build = project.buildConfigs[buildName];
     }
     let cmd = `dtsh ${path.join(wsConfig.rootPath, project.rel_path, build.name, 'zephyr', 'zephyr.dts')} `;
-    let taskName = "Atmosic IDE DTSH Sehll: " + project.name + " " + build.name;
+    let taskName = "Zephyr IDE DTSH Sehll: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running DTSH Shell ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
 }

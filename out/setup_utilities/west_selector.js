@@ -119,7 +119,7 @@ async function westSelector(context, wsConfig) {
         // Looks for board directories
         let westOptions = {};
         westOptions["Openair Repo"] = "";
-        westOptions["Atmosic Private Repo"] = "";
+        westOptions["Zephyr Private Repo"] = "";
         westOptions["Select west.yml in Workspace"] = "";
         const westOptionQpItems = [];
         for (let key in westOptions) {
@@ -144,7 +144,7 @@ async function westSelector(context, wsConfig) {
         }
         let copyTemplate = false;
         let westFile;
-        if (pick.label === "Atmosic Private Repo") {
+        if (pick.label === "Zephyr Private Repo") {
             async function validateGitRepoString(name) {
                 return undefined;
             }
@@ -199,7 +199,7 @@ async function westSelector(context, wsConfig) {
                 ignoreFocusOut: true,
                 placeholder: "https://github.com/Atmosic/openair.git",
                 value: "https://github.com/Atmosic/openair.git",
-                prompt: 'Specify the atmosic git repository',
+                prompt: 'Specify the zephyr git repository',
                 validate: validateGitRepoString,
                 shouldResume: shouldResume
             }).catch((error) => {

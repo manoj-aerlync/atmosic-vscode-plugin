@@ -92,7 +92,7 @@ async function activate(context) {
     let projectTreeView = new ProjectTreeView_1.ProjectTreeView(context.extensionPath, context, wsConfig);
     let projectConfigView = new ProjectConfigView_1.ProjectConfigView(context.extensionPath, context, wsConfig);
     let extensionSetupView = new ExtensionSetupView_1.ExtensionSetupView(context.extensionPath, context, wsConfig, globalConfig);
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.update-status", () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.update-status", () => {
         if (wsConfig.activeProject) {
             activeProjectDisplay.text = `$(folder) ${wsConfig.activeProject}`;
             let activeBuild = (0, setup_1.getActiveBuildOfProject)(wsConfig, wsConfig.activeProject);
@@ -115,29 +115,29 @@ async function activate(context) {
             }
         }
     }));
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider('atmosicIdeActiveProject', activeProjectView, { webviewOptions: { retainContextWhenHidden: true } }));
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider('atmosicIdeProjects', projectTreeView, { webviewOptions: { retainContextWhenHidden: true } }));
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider('atmosicIdeProjectStatus', projectConfigView, { webviewOptions: { retainContextWhenHidden: true } }));
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider('atmosicIdeExtensionSetup', extensionSetupView, { webviewOptions: { retainContextWhenHidden: true } }));
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider('zephyrIdeActiveProject', activeProjectView, { webviewOptions: { retainContextWhenHidden: true } }));
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider('zephyrIdeProjects', projectTreeView, { webviewOptions: { retainContextWhenHidden: true } }));
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider('zephyrIdeProjectStatus', projectConfigView, { webviewOptions: { retainContextWhenHidden: true } }));
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider('zephyrIdeExtensionSetup', extensionSetupView, { webviewOptions: { retainContextWhenHidden: true } }));
     activeProjectDisplay = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    activeProjectDisplay.command = "atmosic-ide.set-active-project";
+    activeProjectDisplay.command = "zephyr-ide.set-active-project";
     activeProjectDisplay.text = `$(folder) ${wsConfig.activeProject}`;
-    activeProjectDisplay.tooltip = "Atmosic IDE Active Project";
+    activeProjectDisplay.tooltip = "Zephyr IDE Active Project";
     activeProjectDisplay.show();
     context.subscriptions.push(activeProjectDisplay);
     activeBuildDisplay = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    activeBuildDisplay.command = "atmosic-ide.set-active-build";
+    activeBuildDisplay.command = "zephyr-ide.set-active-build";
     if (wsConfig.activeProject) {
         let activeBuild = (0, setup_1.getActiveBuildOfProject)(wsConfig, wsConfig.activeProject);
         if (activeBuild) {
             activeBuildDisplay.text = `$(project) ${activeBuild}`;
         }
     }
-    activeBuildDisplay.tooltip = "Atmosic IDE Active Build";
+    activeBuildDisplay.tooltip = "Zephyr IDE Active Build";
     activeBuildDisplay.show();
     context.subscriptions.push(activeBuildDisplay);
     activeRunnerDisplay = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    activeRunnerDisplay.command = "atmosic-ide.set-active-runner";
+    activeRunnerDisplay.command = "zephyr-ide.set-active-runner";
     if (wsConfig.activeProject) {
         let activeBuild = (0, setup_1.getActiveBuildOfProject)(wsConfig, wsConfig.activeProject);
         if (activeBuild) {
@@ -147,25 +147,25 @@ async function activate(context) {
             }
         }
     }
-    activeRunnerDisplay.tooltip = "Atmosic IDE Active Runner";
+    activeRunnerDisplay.tooltip = "Zephyr IDE Active Runner";
     activeRunnerDisplay.show();
     context.subscriptions.push(activeRunnerDisplay);
     let activeBuildPristineButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    activeBuildPristineButton.command = "atmosic-ide.build-pristine";
+    activeBuildPristineButton.command = "zephyr-ide.build-pristine";
     activeBuildPristineButton.text = `$(debug-rerun)`;
-    activeBuildPristineButton.tooltip = "Atmosic IDE Build Pristine";
+    activeBuildPristineButton.tooltip = "Zephyr IDE Build Pristine";
     activeBuildPristineButton.show();
     context.subscriptions.push(activeBuildPristineButton);
     let activeBuildButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    activeBuildButton.command = "atmosic-ide.build";
+    activeBuildButton.command = "zephyr-ide.build";
     activeBuildButton.text = `$(play)`;
-    activeBuildButton.tooltip = "Atmosic IDE Build";
+    activeBuildButton.tooltip = "Zephyr IDE Build";
     activeBuildButton.show();
     context.subscriptions.push(activeBuildButton);
     let activeFlashButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    activeFlashButton.command = "atmosic-ide.flash";
+    activeFlashButton.command = "zephyr-ide.flash";
     activeFlashButton.text = `$(arrow-circle-up)`;
-    activeFlashButton.tooltip = "Atmosic IDE Flash";
+    activeFlashButton.tooltip = "Zephyr IDE Flash";
     activeFlashButton.show();
     context.subscriptions.push(activeFlashButton);
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(handleChange => {
@@ -184,13 +184,13 @@ async function activate(context) {
                         }
                         activeRunnerDisplay.text = `$(chip) ${activeRunner}`;
                     }
-                    vscode.commands.executeCommand("atmosic-ide.update-web-view");
+                    vscode.commands.executeCommand("zephyr-ide.update-web-view");
                 }
             }
         }
     }));
     // Extension/Workspace Setup Commands
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.init-workspace", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.init-workspace", async () => {
         if ((0, utils_1.getRootPath)()) {
             var setupViewUpdate = (wsConfig) => {
                 extensionSetupView.updateWebView(wsConfig, globalConfig);
@@ -201,11 +201,11 @@ async function activate(context) {
             vscode.window.showErrorMessage("Open Folder Before Continuing");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.check-build-dependencies", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.check-build-dependencies", async () => {
         await (0, setup_1.checkIfToolsAvailable)(context, wsConfig, globalConfig);
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.setup-west-environment", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.setup-west-environment", async () => {
         if ((0, utils_1.getRootPath)()) {
             await (0, setup_1.setupWestEnvironment)(context, wsConfig, globalConfig);
             extensionSetupView.updateWebView(wsConfig, globalConfig);
@@ -214,29 +214,29 @@ async function activate(context) {
             vscode.window.showErrorMessage("Open Folder Before Continuing");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.install-sdk", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.install-sdk", async () => {
         await (0, setup_toolchain_1.installSdk)(context, globalConfig, utils_1.output, undefined, undefined, true);
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.west-init", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.west-init", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.pythonEnvironmentSetup) {
             await (0, setup_1.westInit)(context, wsConfig, globalConfig);
             extensionSetupView.updateWebView(wsConfig, globalConfig);
         }
         else {
-            vscode.window.showErrorMessage("Run `Atmosic IDE: Setup West Environment` first.");
+            vscode.window.showErrorMessage("Run `Zephyr IDE: Setup West Environment` first.");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.west-update", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.west-update", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.pythonEnvironmentSetup) {
             await (0, setup_1.westUpdate)(context, wsConfig, globalConfig);
             extensionSetupView.updateWebView(wsConfig, globalConfig);
         }
         else {
-            vscode.window.showErrorMessage("Run `Atmosic IDE: Setup West Environment` first.");
+            vscode.window.showErrorMessage("Run `Zephyr IDE: Setup West Environment` first.");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.reset-extension", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.reset-extension", async () => {
         const selection = await vscode.window.showWarningMessage('Are you sure you want to Reset the Extension?', 'Yes', 'Cancel');
         if (selection !== 'Yes') {
             return;
@@ -244,7 +244,7 @@ async function activate(context) {
         await (0, setup_1.clearWorkspaceState)(context, wsConfig);
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.clear-projects", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.clear-projects", async () => {
         const selection = await vscode.window.showWarningMessage('Are you sure you want to Clear All Projects?', 'Yes', 'Cancel');
         if (selection !== 'Yes') {
             return;
@@ -252,143 +252,143 @@ async function activate(context) {
         wsConfig.projects = {};
         wsConfig.activeProject = undefined;
         (0, setup_1.setWorkspaceState)(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.load-projects-from-file", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.load-projects-from-file", async () => {
         await (0, setup_1.loadProjectsFromFile)(wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.save-projects-to-file", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.save-projects-to-file", async () => {
         (0, setup_1.setWorkspaceState)(context, wsConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.disable-automatic-project-target", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.disable-automatic-project-target", async () => {
         wsConfig.automaticProjectSelction = false;
         (0, setup_1.setWorkspaceState)(context, wsConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.enable-automatic-project-target", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.enable-automatic-project-target", async () => {
         wsConfig.automaticProjectSelction = true;
         (0, setup_1.setWorkspaceState)(context, wsConfig);
     }));
     // Project Setup Commands
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.create-project", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.create-project", async () => {
         let projectPath = await project.createNewProjectFromSample(context, wsConfig);
         if (projectPath !== undefined) {
             await project.addProject(wsConfig, context, projectPath);
             extensionSetupView.updateWebView(wsConfig, globalConfig);
-            vscode.commands.executeCommand("atmosic-ide.update-web-view");
+            vscode.commands.executeCommand("zephyr-ide.update-web-view");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-project", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-project", async () => {
         await project.addProject(wsConfig, context, undefined);
         extensionSetupView.updateWebView(wsConfig, globalConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-project", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-project", async () => {
         await project.removeProject(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-project-config-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-project-config-files", async () => {
         await project.addConfigFiles(context, wsConfig, true, true);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-project-config-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-project-config-files", async () => {
         await project.removeConfigFiles(context, wsConfig, true, true);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-project-overlay-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-project-overlay-files", async () => {
         await project.addConfigFiles(context, wsConfig, false, true);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-project-overlay-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-project-overlay-files", async () => {
         await project.removeConfigFiles(context, wsConfig, false, true);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.set-active-project", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.set-active-project", async () => {
         await project.setActiveProject(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-build", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
             await project.addBuild(wsConfig, context);
-            vscode.commands.executeCommand("atmosic-ide.update-web-view");
+            vscode.commands.executeCommand("zephyr-ide.update-web-view");
         }
         else {
-            vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` first.");
+            vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` first.");
         }
     }));
     vscode.workspace.onDidChangeConfiguration((event) => {
-        const projectsFileChanged = event.affectsConfiguration(`atmosic-ide.use-zephyr-ide-json`);
-        const projectsChanged = event.affectsConfiguration(`atmosic-ide.projects`);
+        const projectsFileChanged = event.affectsConfiguration(`zephyr-ide.use-zephyr-ide-json`);
+        const projectsChanged = event.affectsConfiguration(`zephyr-ide.projects`);
         if (projectsChanged) {
-            vscode.commands.executeCommand("atmosic-ide.load-projects-from-file");
+            vscode.commands.executeCommand("zephyr-ide.load-projects-from-file");
         }
     });
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-build", async () => {
         await project.removeBuild(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-build-config-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-build-config-files", async () => {
         await project.addConfigFiles(context, wsConfig, true, false);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-build-config-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-build-config-files", async () => {
         await project.removeConfigFiles(context, wsConfig, true, false);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-build-overlay-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-build-overlay-files", async () => {
         await project.addConfigFiles(context, wsConfig, false, false);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-build-overlay-files", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-build-overlay-files", async () => {
         await project.removeConfigFiles(context, wsConfig, false, false);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.set-active-build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.set-active-build", async () => {
         await project.setActiveBuild(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.add-runner", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.add-runner", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
             await project.addRunner(wsConfig, context);
-            vscode.commands.executeCommand("atmosic-ide.update-web-view");
+            vscode.commands.executeCommand("zephyr-ide.update-web-view");
         }
         else {
-            vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` first.");
+            vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` first.");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.remove-runner", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.remove-runner", async () => {
         await project.removeRunner(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.set-active-runner", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.set-active-runner", async () => {
         await project.setActiveRunner(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.change-debug-launch-for-build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.change-debug-launch-for-build", async () => {
         await project.selectDebugLaunchConfiguration(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.change-build-debug-launch-for-build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.change-build-debug-launch-for-build", async () => {
         await project.selectBuildDebugLaunchConfiguration(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.change-debug-attach-launch-for-build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.change-debug-attach-launch-for-build", async () => {
         await project.selectDebugAttachLaunchConfiguration(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
     }));
     //Debugger Helper commands
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-project-name", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-project-name", async () => {
         return wsConfig.activeProject;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-project-path", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-project-path", async () => {
         if (wsConfig.activeProject) {
             return path_1.default.join(wsConfig.rootPath, wsConfig.projects[wsConfig.activeProject].rel_path);
         }
         return;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-build-path", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-build-path", async () => {
         if (wsConfig.activeProject) {
             let project = wsConfig.projects[wsConfig.activeProject];
             let activeBuildConfig = wsConfig.projectStates[wsConfig.activeProject].activeBuildConfig;
@@ -398,7 +398,7 @@ async function activate(context) {
         }
         return;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-build-board-path", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-build-board-path", async () => {
         if (wsConfig.activeProject) {
             let project = wsConfig.projects[wsConfig.activeProject];
             let activeBuildConfig = wsConfig.projectStates[wsConfig.activeProject].activeBuildConfig;
@@ -421,7 +421,7 @@ async function activate(context) {
         }
         return;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-board-name", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-board-name", async () => {
         if (wsConfig.activeProject) {
             let project = wsConfig.projects[wsConfig.activeProject];
             let activeBuildConfig = wsConfig.projectStates[wsConfig.activeProject].activeBuildConfig;
@@ -431,10 +431,10 @@ async function activate(context) {
         }
         return;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.select-active-build-path", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.select-active-build-path", async () => {
         await project.setActiveProject(context, wsConfig);
         await project.setActiveBuild(context, wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-web-view");
+        vscode.commands.executeCommand("zephyr-ide.update-web-view");
         if (wsConfig.activeProject) {
             let project = wsConfig.projects[wsConfig.activeProject];
             let activeBuildConfig = wsConfig.projectStates[wsConfig.activeProject].activeBuildConfig;
@@ -444,25 +444,25 @@ async function activate(context) {
         }
         return;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-gdb-path", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-gdb-path", async () => {
         return globalConfig.armGdbPath;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-zephyr-dir", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-zephyr-dir", async () => {
         return wsConfig.activeSetupState?.zephyrDir;
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-toolchain-path", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-toolchain-path", async () => {
         return await (0, setup_1.getToolchainDir)();
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-zephyr-ide-json-variable", async (var_name) => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-zephyr-ide-json-variable", async (var_name) => {
         return (0, setup_1.getVariable)(wsConfig, var_name);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-project-variable", async (var_name) => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-project-variable", async (var_name) => {
         if (wsConfig.activeProject) {
             return (0, setup_1.getVariable)(wsConfig, var_name, wsConfig.activeProject);
         }
         return "";
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.get-active-build-variable", async (var_name) => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.get-active-build-variable", async (var_name) => {
         if (wsConfig.activeProject) {
             let activeBuildConfig = wsConfig.projectStates[wsConfig.activeProject].activeBuildConfig;
             return (0, setup_1.getVariable)(wsConfig, var_name, wsConfig.activeProject, activeBuildConfig);
@@ -470,75 +470,75 @@ async function activate(context) {
         return "";
     }));
     //Board commands
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.build-pristine", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.build-pristine", async () => {
         (0, build_1.buildHelper)(context, wsConfig, true);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.build", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.build", async () => {
         (0, build_1.buildHelper)(context, wsConfig, false);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.flash", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.flash", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
             await (0, flash_1.flashActive)(wsConfig);
         }
         else {
-            vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` first.");
+            vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` first.");
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.clean", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.clean", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
             await (0, build_1.clean)(wsConfig, undefined);
         }
         else {
-            vscode.window.showErrorMessage("Run `Atmosic IDE: West Update` first.");
+            vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` first.");
         }
     }));
     context.subscriptions.push(vscode.window.registerTerminalProfileProvider('zephyr-ide.terminal-profile', {
         provideTerminalProfile(token) {
             let opts = {
-                name: "Atmosic IDE Terminal",
+                name: "Zephyr IDE Terminal",
                 env: (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState, true),
             };
             return new vscode.TerminalProfile(opts);
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.update-web-view", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.update-web-view", async () => {
         activeProjectView.updateWebView(wsConfig);
         projectTreeView.updateWebView(wsConfig);
         projectConfigView.updateWebView(wsConfig);
-        vscode.commands.executeCommand("atmosic-ide.update-status");
+        vscode.commands.executeCommand("zephyr-ide.update-status");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.buildNonSys", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.buildNonSys", async () => {
             (0, build_1.buildNonSysBuild)(wsConfig, true);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.buildNonSpeMcu", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.buildNonSpeMcu", async () => {
             (0, build_1.buildNonSpeMcuboot)(wsConfig, true);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.buildNonMcu", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.buildNonMcu", async () => {
             (0, build_1.buildNonMcuboot)(wsConfig, true);
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.westDebug", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.westDebug", async () => {
             (0, build_1.westDebug)(wsConfig, true);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.start-menu-config", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.start-menu-config", async () => {
         (0, build_1.buildMenuConfig)(wsConfig, true);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.start-gui-config", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.start-gui-config", async () => {
         (0, build_1.buildMenuConfig)(wsConfig, false);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.start-dtsh-shell", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.start-dtsh-shell", async () => {
         (0, build_1.runDtshShell)(wsConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.run-ram-report", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.run-ram-report", async () => {
         (0, build_1.buildRamRomReport)(wsConfig, true);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.run-rom-report", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.run-rom-report", async () => {
         (0, build_1.buildRamRomReport)(wsConfig, false);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.modify-build-arguments", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.modify-build-arguments", async () => {
         project.modifyBuildArguments(context, wsConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.use-local-zephyr-install", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.use-local-zephyr-install", async () => {
         let rootPath = (0, utils_1.getRootPath)()?.fsPath;
         if (!rootPath) {
             rootPath = "";
@@ -546,7 +546,7 @@ async function activate(context) {
         await (0, setup_1.setSetupState)(context, wsConfig, globalConfig, setup_1.SetupStateType.SELECTED, rootPath);
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.use-external-zephyr-install", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.use-external-zephyr-install", async () => {
         const setupPathList = [];
         let rootPath = (0, utils_1.getRootPath)()?.fsPath;
         if (!rootPath) {
@@ -568,7 +568,7 @@ async function activate(context) {
         const pickOptions = {
             ignoreFocusOut: true,
             matchOnDescription: true,
-            placeHolder: "Select Atmosic Install Folder",
+            placeHolder: "Select Zephyr Install Folder",
         };
         let selectedSetupPath = await vscode.window.showQuickPick(setupPathList, pickOptions);
         let externalInstallLocation;
@@ -590,18 +590,18 @@ async function activate(context) {
             extensionSetupView.updateWebView(wsConfig, globalConfig);
         }
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.reset-zephyr-install-selection", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.reset-zephyr-install-selection", async () => {
         (0, setup_1.setSetupState)(context, wsConfig, globalConfig, setup_1.SetupStateType.NONE);
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.mark-west-as-ready", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.mark-west-as-ready", async () => {
         if (wsConfig.activeSetupState) {
             wsConfig.activeSetupState.westUpdated = true;
             (0, setup_1.saveSetupState)(context, wsConfig, globalConfig);
         }
         extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("atmosic-ide.shell_test", async () => {
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.shell_test", async () => {
         utils_1.output.show();
         utils_1.output.appendLine((0, setup_toolchain_1.getPlatformName)() ?? "");
         utils_1.output.appendLine((((0, setup_toolchain_1.getPlatformName)() ?? "") === "macos") ? "detected macos" : "not macos");
@@ -610,7 +610,7 @@ async function activate(context) {
         let force_bash = true;
         utils_1.output.appendLine(configuration.get('terminal.integrated.defaultProfile.' + platform_name) ?? "");
         utils_1.output.appendLine(configuration.get('terminal.integrated.defaultProfile.' + platform_name) === "zsh" ? "default set to zsh" : "default set to something else");
-        let default_terminal = (configuration.get('terminal.integrated.defaultProfile.' + platform_name) === "zsh" || force_bash) ? "bash" : "Atmosic IDE Terminal";
+        let default_terminal = (configuration.get('terminal.integrated.defaultProfile.' + platform_name) === "zsh" || force_bash) ? "bash" : "Zephyr IDE Terminal";
         utils_1.output.appendLine("Setting terminal to: " + default_terminal);
         //configuration.update('terminal.integrated.defaultProfile.' + platform_name, default_terminal, target, false);
         utils_1.output.appendLine(configuration.get('terminal.integrated.defaultProfile.' + platform_name) ?? "");

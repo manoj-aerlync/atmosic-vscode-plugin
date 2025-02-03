@@ -290,7 +290,7 @@ class ProjectTreeView {
             }
             switch (message.command) {
                 case "deleteProject": {
-                    (0, project_1.removeProject)(this.context, this.wsConfig, message.value.project).finally(() => { vscode.commands.executeCommand("atmosic-ide.update-web-view"); });
+                    (0, project_1.removeProject)(this.context, this.wsConfig, message.value.project).finally(() => { vscode.commands.executeCommand("zephyr-ide.update-web-view"); });
                     break;
                 }
                 case "addBuild": {
