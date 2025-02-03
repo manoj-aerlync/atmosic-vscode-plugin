@@ -320,7 +320,6 @@ class ProjectTreeView {
                     break;
                 }
                 case "menuConfig": {
-			vscode.window.showErrorMessage("Invalid project or build");
                     (0, build_1.buildByName)(this.wsConfig, true, message.value.project, message.value.build, true);
                     (0, project_1.setActive)(this.wsConfig, message.value.project, message.value.build);
                     break;

@@ -39,7 +39,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clean = exports.runDtshShell = exports.buildRamRomReport = exports.buildMenuConfig = exports.buildNonSys = exports.build = exports.buildByName = exports.buildHelper = exports.regenerateCompileCommands = void 0;
+exports.clean = exports.runDtshShell = exports.buildRamRomReport = exports.buildMenuConfig = exports.build = exports.buildByName = exports.buildHelper = exports.regenerateCompileCommands = void 0;
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs-extra"));
@@ -66,7 +66,7 @@ async function regenerateCompileCommands(wsConfig) {
         }
     }
     let data = JSON.stringify(compileCommandData);
-    fs.writeFile(path.join(wsConfig.rootPath, '.vscode', 'compile_commands.json'), data);
+    fs.outputFile(path.join(wsConfig.rootPath, '.vscode', 'compile_commands.json'), data);
 }
 exports.regenerateCompileCommands = regenerateCompileCommands;
 async function buildHelper(context, wsConfig, pristine) {
@@ -96,15 +96,15 @@ async function buildHelper(context, wsConfig, pristine) {
 }
 exports.buildHelper = buildHelper;
 async function buildByName(wsConfig, pristine, projectName, buildName, isMenuConfig = false) {
-   if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
+    if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
         let project = wsConfig.projects[projectName];
         let buildconfig = project.buildConfigs[buildName];
-        if (project && buildconfig) {
+        if (project && build) {
             if (isMenuConfig) {
                 buildMenuConfig(wsConfig, true, project, buildconfig);
             }
             else {
-		build(wsConfig, project, buildconfig, pristine);
+                build(wsConfig, project, buildconfig, pristine);
             }
         }
         else {
@@ -135,7 +135,7 @@ async function build(wsConfig, project, build, pristine) {
     }
     let projectFolder = path.join(wsConfig.rootPath, project.rel_path);
     let buildFolder = path.join(wsConfig.rootPath, project.rel_path, build.name);
-    let cmd = `west build always ${extraWestBuildArgs} ${project.rel_path} -b ${build.board.split('/')[0]}@mcuboot//ns -T ${extraWestBuildCMakeArgs} `;
+    let cmd = `west build ${projectFolder} --build-dir ${buildFolder} `;
     let buildFsDir;
     if (fs.existsSync(buildFolder)) {
         buildFsDir = fs.readdirSync(buildFolder);
@@ -148,9 +148,8 @@ async function build(wsConfig, project, build, pristine) {
         else if (wsConfig.activeSetupState) {
             boardRoot = wsConfig.activeSetupState?.zephyrDir;
         }
-		    cmd = `west build -p always --sysbuild ${project.rel_path} -b ${build.board.split('/')[0]}@mcuboot//ns -T ${extraWestBuildCMakeArgs}`;
-        
-	if (primaryConfFiles.length) {
+        cmd = `west build -b ${build.board} ${projectFolder} -p --build-dir ${buildFolder} ${extraWestBuildArgs} -- -DBOARD_ROOT='${boardRoot}' ${extraWestBuildCMakeArgs} `;
+        if (primaryConfFiles.length) {
             let confFileString = "";
             primaryConfFiles.map(x => (confFileString = confFileString + x + ";"));
             cmd = cmd + ` -DCONF_FILE='${confFileString}' `;
@@ -178,134 +177,6 @@ async function build(wsConfig, project, build, pristine) {
     return ret;
 }
 exports.build = build;
-async function buildNonSysBuild(wsConfig, isMenuConfig, project, build) {
-    if (project === undefined) {
-        if (wsConfig.activeProject === undefined) {
-            vscode.window.showErrorMessage("Select a project before trying to build");
-            return;
-        }
-        project = wsConfig.projects[wsConfig.activeProject];
-    }   
-    if (build === undefined) {
-        let buildName = (0, setup_1.getActiveBuildOfProject)(wsConfig, project.name);
-        if (buildName === undefined) {
-            await vscode.window.showErrorMessage(`You must choose a Build Configuration to continue.`);
-            return;
-        }       
-        build = project.buildConfigs[buildName];
-    }       
-    let projectFolder = path.join(wsConfig.rootPath, project.rel_path);
-    let buildFolder = path.join(wsConfig.rootPath, project.rel_path, build.name);
-    let buildFsDir;
-    if (fs.existsSync(buildFolder)) {
-        buildFsDir = fs.readdirSync(buildFolder);
-    }
-	let cmd;
-
-	if (build.board.startsWith("ATMEVK-3330")) {
-		cmd = `west build -p -s bootloader/mcuboot/boot/zephyr -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr -- \  -DCONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256=y \ -DCONFIG_BOOT_MAX_IMG_SECTORS=512 -DDTC_OVERLAY_FILE="$PWD/zephyr/boards/zephyr/atm33evk/${build.board.split('/')[0]}_mcuboot_bl.overlay" && west build -p -s openair/samples/spe -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/openair/samples/spe -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_GENERATE_UNSIGNED_IMAGE=n -DDTS_EXTRA_CPPFLAGS=-DATMWSTK=LL && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}@mcuboot//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_SIGNATURE_KEY_FILE=\\"bootloader/mcuboot/root-ec-p256.pem\\" -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" `;
-	}
-	if (build.board.startsWith("ATMEVK-3430")) {
-		cmd = `west build -p -s bootloader/mcuboot/boot/zephyr -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr -- \  -DCONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256=y \ -DCONFIG_BOOT_MAX_IMG_SECTORS=512 -DDTC_OVERLAY_FILE="$PWD/zephyr/boards/zephyr/atm34evk/${build.board.split('/')[0]}_mcuboot_bl.overlay" && west build -p -s openair/samples/spe -b ${build.board.split('/')[0]}@mcuboot -d build/${build.board.split('/')[0]}/openair/samples/spe -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_GENERATE_UNSIGNED_IMAGE=n -DDTS_EXTRA_CPPFLAGS=-DATMWSTK=LL && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}@mcuboot//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_BOOTLOADER_MCUBOOT=y -DCONFIG_MCUBOOT_SIGNATURE_KEY_FILE=\\"bootloader/mcuboot/root-ec-p256.pem\\" -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" `;
-	}
-	let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
-    vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
-    await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
-    regenerateCompileCommands(wsConfig);
-}
-exports.buildNonSysBuild = buildNonSysBuild;
-async function buildNonMcuboot(wsConfig, isMenuConfig, project, build) {
-    if (project === undefined) {
-        if (wsConfig.activeProject === undefined) {
-            vscode.window.showErrorMessage("Select a project before trying to build");
-            return;
-        }
-        project = wsConfig.projects[wsConfig.activeProject];
-    }   
-    if (build === undefined) {
-        let buildName = (0, setup_1.getActiveBuildOfProject)(wsConfig, project.name);
-        if (buildName === undefined) {
-            await vscode.window.showErrorMessage(`You must choose a Build Configuration to continue.`);
-            return;
-        }       
-        build = project.buildConfigs[buildName];
-    }       
-    let projectFolder = path.join(wsConfig.rootPath, project.rel_path);
-    let buildFolder = path.join(wsConfig.rootPath, project.rel_path, build.name);
-    let buildFsDir;
-    if (fs.existsSync(buildFolder)) {
-        buildFsDir = fs.readdirSync(buildFolder);
-    }       
-    let cmd = `west build -p -s openair/samples/spe -b ${build.board.split('/')[0]} -d build/${build.board.split('/')[0]}/openair/samples/spe && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\"`;
-
-    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
-    vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
-    await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
-    regenerateCompileCommands(wsConfig);
-}
-exports.buildNonMcuboot = buildNonMcuboot;
-async function buildNonSpeMcuboot(wsConfig, isMenuConfig, project, build) {
-    if (project === undefined) {
-        if (wsConfig.activeProject === undefined) {
-            vscode.window.showErrorMessage("Select a project before trying to build");
-            return;
-        }
-        project = wsConfig.projects[wsConfig.activeProject];
-    }   
-    if (build === undefined) {
-        let buildName = (0, setup_1.getActiveBuildOfProject)(wsConfig, project.name);
-        if (buildName === undefined) {
-            await vscode.window.showErrorMessage(`You must choose a Build Configuration to continue.`);
-            return;
-        }       
-        build = project.buildConfigs[buildName];
-    }       
-    let projectFolder = path.join(wsConfig.rootPath, project.rel_path);
-    let buildFolder = path.join(wsConfig.rootPath, project.rel_path, build.name);
-    let buildFsDir;
-    if (fs.existsSync(buildFolder)) {
-        buildFsDir = fs.readdirSync(buildFolder);
-    }       
-    let cmd = `west build -p -s openair/samples/spe -b ${build.board.split('/')[0]} -d build/${build.board.split('/')[0]}/openair/samples/spe && west build -p -s ${project.rel_path}  -b ${build.board.split('/')[0]}//ns  -d build/${build.board.split('/')[0]}_ns/${project.rel_path}  -- -DCONFIG_SPE_PATH=\\"$PWD/build/${build.board.split('/')[0]}/openair/samples/spe\\" -DCONFIG_MERGE_SPE_NSPE=y`;
-
-    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
-    vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
-    await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
-    regenerateCompileCommands(wsConfig);
-}
-exports.buildNonSpeMcuboot = buildNonSpeMcuboot;
-
-async function westDebug(wsConfig, isNonSysBuild, project, build) {
-    if (project === undefined) {
-        if (wsConfig.activeProject === undefined) {
-            vscode.window.showErrorMessage("Select a project before trying to build");
-            return;
-        }
-        project = wsConfig.projects[wsConfig.activeProject];
-    }   
-    if (build === undefined) {
-        let buildName = (0, setup_1.getActiveBuildOfProject)(wsConfig, project.name);
-        if (buildName === undefined) {
-            await vscode.window.showErrorMessage(`You must choose a Build Configuration to continue.`);
-            return;
-        }       
-        build = project.buildConfigs[buildName];
-    }       
-    let projectFolder = path.join(wsConfig.rootPath, project.rel_path);
-    let buildFolder = path.join(wsConfig.rootPath, project.rel_path, build.name);
-    let buildFsDir;
-    if (fs.existsSync(buildFolder)) {
-        buildFsDir = fs.readdirSync(buildFolder);
-    }       
-    
-    let cmd = `west debug --build-dir build/${build.board.split('/')[0]}_ns/${project.rel_path} --openocd ./modules/hal/zephyr_lib/tools/openocd/bin/Linux/openocd `;
-
-    let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
-    vscode.window.showInformationMessage(`Running without sysbuild ${build.name} from project: ${project.name}`);
-    await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);
-    regenerateCompileCommands(wsConfig);
-}
-exports.westDebug = westDebug;
 async function buildMenuConfig(wsConfig, isMenuConfig, project, build) {
     if (project === undefined) {
         if (wsConfig.activeProject === undefined) {
@@ -323,13 +194,16 @@ async function buildMenuConfig(wsConfig, isMenuConfig, project, build) {
         build = project.buildConfigs[buildName];
     }
     let projectFolder = path.join(wsConfig.rootPath, project.rel_path);
-    let buildFolder = path.join(wsConfig.rootPath, build.name);
+    let buildFolder = path.join(wsConfig.rootPath, project.rel_path, build.name);
     let buildFsDir;
     if (fs.existsSync(buildFolder)) {
         buildFsDir = fs.readdirSync(buildFolder);
     }
-        await vscode.window.showErrorMessage(`Run a Build or Build Pristine before running Menu/GUI Config.${buildFolder}`);
-    let cmd = `west build -t ${isMenuConfig ? "menuconfig" : "guiconfig"} ${projectFolder} --build-dir build/`;
+    if (buildFsDir == undefined || buildFsDir.length == 0) {
+        await vscode.window.showErrorMessage(`Run a Build or Build Pristine before running Menu/GUI Config.`);
+        return;
+    }
+    let cmd = `west build -t ${isMenuConfig ? "menuconfig" : "guiconfig"} ${projectFolder} --build-dir ${buildFolder} `;
     let taskName = "Zephyr IDE Build: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Running MenuConfig ${build.name} from project: ${project.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);

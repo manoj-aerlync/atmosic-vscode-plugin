@@ -48,7 +48,7 @@ const path_1 = __importDefault(require("path"));
 const fs = __importStar(require("fs"));
 async function runnerSelector(boardfolder) {
     const title = 'Add Runner';
-    let runners = ["sysbuild", "non-sysbuild", "non-mcuboot", "non-spe"];
+    let runners = ["default"];
     let boardcmakePath = path_1.default.join(boardfolder, 'board.cmake');
     if (fs.existsSync(boardcmakePath)) {
         const boardCMakeFile = fs.readFileSync(boardcmakePath, 'utf8');

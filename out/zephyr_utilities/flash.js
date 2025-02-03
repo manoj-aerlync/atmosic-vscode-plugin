@@ -84,27 +84,11 @@ async function flash(wsConfig, project, build, runner) {
     //let cmds = await vscode.commands.getCommands();
     //const subArr = cmds.filter(str => str.includes("debug"));
     // Tasks
-	let cmd;
-
-    if (runner.runner === "sysbuild") {
-	    vscode.window.showErrorMessage("flash");
-    cmd = ` west flash -d build --verify --device=${runner.args} --jlink`;
+    let cmd = `west flash --build-dir ${path_1.default.join(wsConfig.rootPath, project.rel_path, build.name)}`;
+    if (runner.runner !== "default") {
+        cmd += ` -r ${runner.runner}`;
     }
-
-    if (runner.runner === "non-sysbuild") {
-	    vscode.window.showErrorMessage("flash mcu");
-	cmd = `west flash --verify --device=${runner.args} -d build/${build.board.split('/')[0]}/bootloader/mcuboot/boot/zephyr --noreset --jlink && west flash --verify --device=${runner.args} -d build/${build.board.split('/')[0]}_ns/${project.rel_path} --jlink `;
-    }
-    
-    if (runner.runner === "non-mcuboot") {
-	    vscode.window.showErrorMessage("flash non-mcu");
-	cmd = `west flash --verify --device=${runner.args} -d build/${build.board.split('/')[0]}/openair/samples/spe --noreset --jlink && west flash --verify --device=${runner.args} -d build/${build.board.split('/')[0]}_ns/${project.rel_path} --jlink `;
-    }
-    if (runner.runner === "non-spe") {
-	    vscode.window.showErrorMessage("flash non-spe");
-	cmd = `west flash --verify --device=${runner.args} -d build/${build.board.split('/')[0]}_ns/${project.rel_path} --jlink `;
-    }
-
+    cmd += ` ${runner.args}`;
     let taskName = "Zephyr IDE Flash: " + project.name + " " + build.name;
     vscode.window.showInformationMessage(`Flashing for ${build.name}`);
     await (0, utils_1.executeTaskHelper)(taskName, cmd, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), wsConfig.activeSetupState?.setupPath);

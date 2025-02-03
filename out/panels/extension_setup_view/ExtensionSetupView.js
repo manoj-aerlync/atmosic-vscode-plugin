@@ -99,6 +99,7 @@ class ExtensionSetupView {
         else {
             bodyString = bodyString + `Select Folder for Zephyr Setup Location.<p/>`;
             bodyString = bodyString + `<vscode-button id="cmd-btn" class="widebtn" name="zephyr-ide.use-local-zephyr-install" >Workspace</vscode-button>`;
+            bodyString = bodyString + `<vscode-button id="cmd-btn" class="widebtn" name="zephyr-ide.use-global-zephyr-install" >Global</vscode-button>`;
             bodyString = bodyString + `<vscode-button id="cmd-btn" class="widebtn" name="zephyr-ide.use-external-zephyr-install" >Other Folder</vscode-button>`;
         }
         this.setHtml(bodyString);

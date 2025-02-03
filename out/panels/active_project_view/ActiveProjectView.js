@@ -97,50 +97,49 @@ class ActiveProjectView {
                         leaf: 'project',
                     },
                     actions: this.buildActions,
-                    label: "Build with Sysbuild",
+                    label: "Build Pristine",
                     description: activeBuild ? activeBuild.name : "Not Available",
                     value: { command: "vsCommand", vsCommand: "zephyr-ide.build-pristine" },
                 }, {
                     icons: {
                         leaf: 'project',
                     },
-		    actions: this.buildActions,
-                    label: "Build without sysbuild",
-                    description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "zephyr-ide.buildNonSys" },
-                },{
-                    icons: {
-                        leaf: 'project',
-                    },
                     actions: this.buildActions,
-                    label: "Build SPE-NSPE Merge",
+                    label: "Build",
                     description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "zephyr-ide.buildNonSpeMcu" },
-                },{
-                    icons: {
-                        leaf: 'project',
-                    },
-                    actions: this.buildActions,
-                    label: "Build without MCUBOOT",
-                    description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "zephyr-ide.buildNonMcu" },
-                },{
-                    icons: {
-                        leaf: 'project',
-                    },
-                    actions: this.buildActions,
-                    label: "West Debug",
-                    description: activeBuild ? activeBuild.name : "Not Available",
-                    value: { command: "vsCommand", vsCommand: "zephyr-ide.westDebug" },
-                },{
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.build" },
+                }, {
                     icons: {
                         leaf: 'chip',
                     },
                     label: "Flash",
                     description: activeRunner ? activeRunner.name : "Not Available",
                     value: { command: "vsCommand", vsCommand: "zephyr-ide.flash" },
-                }
-                ];
+                }, {
+                    icons: {
+                        leaf: 'debug-alt',
+                    },
+                    actions: this.launchActions,
+                    label: "Debug",
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.debug", "launchChangeCmd": "zephyr-ide.change-debug-launch-for-build", },
+                    description: activeBuild?.launchTarget ? activeBuild.launchTarget : "Zephyr IDE: Debug",
+                }, {
+                    icons: {
+                        leaf: 'debug-all',
+                    },
+                    actions: this.launchActions,
+                    label: "Build and Debug",
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.build-debug", "launchChangeCmd": "zephyr-ide.change-build-debug-launch-for-build", },
+                    description: activeBuild?.buildDebugTarget ? activeBuild.buildDebugTarget : "Zephyr IDE: Debug",
+                }, {
+                    icons: {
+                        leaf: 'debug-console',
+                    },
+                    actions: this.launchActions,
+                    label: "Debug Attach",
+                    value: { command: "vsCommand", vsCommand: "zephyr-ide.debug-attach", "launchChangeCmd": "zephyr-ide.change-debug-attach-launch-for-build" },
+                    description: activeBuild?.attachTarget ? activeBuild.attachTarget : "Zephyr IDE: Attach",
+                }];
             this.view.webview.postMessage(data);
         }
     }

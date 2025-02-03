@@ -168,6 +168,12 @@ async function activate(context) {
     activeFlashButton.tooltip = "Zephyr IDE Flash";
     activeFlashButton.show();
     context.subscriptions.push(activeFlashButton);
+    let activeDebugButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+    activeDebugButton.command = "zephyr-ide.debug";
+    activeDebugButton.text = `$(debug-alt)`;
+    activeDebugButton.tooltip = "Zephyr IDE Debug";
+    activeDebugButton.show();
+    context.subscriptions.push(activeDebugButton);
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(handleChange => {
         if (wsConfig.automaticProjectSelction && handleChange) {
             let filePath = path_1.default.relative(wsConfig.rootPath, handleChange.document.uri.fsPath);
@@ -319,7 +325,7 @@ async function activate(context) {
         }
     }));
     vscode.workspace.onDidChangeConfiguration((event) => {
-        const projectsFileChanged = event.affectsConfiguration(`zephyr-ide.use-zephyr-ide-json`);
+        //const projectsFileChanged = event.affectsConfiguration(`zephyr-ide.use-zephyr-ide-json`);
         const projectsChanged = event.affectsConfiguration(`zephyr-ide.projects`);
         if (projectsChanged) {
             vscode.commands.executeCommand("zephyr-ide.load-projects-from-file");
@@ -484,6 +490,51 @@ async function activate(context) {
             vscode.window.showErrorMessage("Run `Zephyr IDE: West Update` first.");
         }
     }));
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.debug", async () => {
+        let debugTarget = "Zephyr IDE: Debug";
+        let activeBuild = await project.getActiveBuild(context, wsConfig);
+        if (activeBuild?.launchTarget) {
+            debugTarget = activeBuild.launchTarget;
+        }
+        let debugConfig = (0, utils_1.getLaunchConfigurationByName)(debugTarget);
+        if (debugConfig) {
+            await vscode.commands.executeCommand('debug.startFromConfig', debugConfig);
+        }
+        else {
+            vscode.window.showErrorMessage("Launch Configuration: " + debugTarget + " not found");
+        }
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.debug-attach", async () => {
+        let debugTarget = "Zephyr IDE: Attach";
+        let activeBuild = await project.getActiveBuild(context, wsConfig);
+        if (activeBuild?.attachTarget) {
+            debugTarget = activeBuild.attachTarget;
+        }
+        let debugConfig = (0, utils_1.getLaunchConfigurationByName)(debugTarget);
+        if (debugConfig) {
+            await vscode.commands.executeCommand('debug.startFromConfig', debugConfig);
+        }
+        else {
+            vscode.window.showErrorMessage("Launch Configuration: " + debugTarget + " not found");
+        }
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.build-debug", async () => {
+        let debugTarget = "Zephyr IDE: Debug";
+        let activeBuild = await project.getActiveBuild(context, wsConfig);
+        if (activeBuild?.buildDebugTarget) {
+            debugTarget = activeBuild.buildDebugTarget;
+        }
+        let debugConfig = (0, utils_1.getLaunchConfigurationByName)(debugTarget);
+        if (debugConfig) {
+            let res = await (0, build_1.buildHelper)(context, wsConfig, false);
+            if (res) {
+                await vscode.commands.executeCommand('debug.startFromConfig', debugConfig);
+            }
+        }
+        else {
+            vscode.window.showErrorMessage("Launch Configuration: " + debugTarget + " not found");
+        }
+    }));
     context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.clean", async () => {
         if (wsConfig.activeSetupState && wsConfig.activeSetupState.westUpdated) {
             await (0, build_1.clean)(wsConfig, undefined);
@@ -507,19 +558,6 @@ async function activate(context) {
         projectConfigView.updateWebView(wsConfig);
         vscode.commands.executeCommand("zephyr-ide.update-status");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.buildNonSys", async () => {
-            (0, build_1.buildNonSysBuild)(wsConfig, true);
-    }));
-    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.buildNonSpeMcu", async () => {
-            (0, build_1.buildNonSpeMcuboot)(wsConfig, true);
-    }));
-    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.buildNonMcu", async () => {
-            (0, build_1.buildNonMcuboot)(wsConfig, true);
-    }));
-
-    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.westDebug", async () => {
-            (0, build_1.westDebug)(wsConfig, true);
-    }));
     context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.start-menu-config", async () => {
         (0, build_1.buildMenuConfig)(wsConfig, true);
     }));
@@ -537,6 +575,19 @@ async function activate(context) {
     }));
     context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.modify-build-arguments", async () => {
         project.modifyBuildArguments(context, wsConfig);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.debug-internal-shell", async () => {
+        utils_1.output.clear();
+        let temp = await (0, utils_1.executeShellCommand)("SET", wsConfig.rootPath, (0, utils_1.getShellEnvironment)(wsConfig.activeSetupState), false);
+        if (temp.stdout) {
+            utils_1.output.append(temp.stdout);
+        }
+        utils_1.output.append(JSON.stringify({ wsConfig }));
+        utils_1.output.append(JSON.stringify({ globalConfig }));
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.use-global-zephyr-install", async () => {
+        await (0, setup_1.setSetupState)(context, wsConfig, globalConfig, setup_1.SetupStateType.SELECTED, await (0, setup_1.getToolsDir)());
+        extensionSetupView.updateWebView(wsConfig, globalConfig);
     }));
     context.subscriptions.push(vscode.commands.registerCommand("zephyr-ide.use-local-zephyr-install", async () => {
         let rootPath = (0, utils_1.getRootPath)()?.fsPath;

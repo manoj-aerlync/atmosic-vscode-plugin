@@ -27,6 +27,29 @@ exports.ncsVersions = exports.zephyrVersions = exports.zephyrHals = exports.tool
 const vscode = __importStar(require("vscode"));
 exports.toolchainTargets = [
     { picked: true, label: "arm" },
+    { label: "sep", kind: vscode.QuickPickItemKind.Separator },
+    { label: "aarch64" },
+    { label: "arc" },
+    { label: "arc64" },
+    { label: "microblazeel" },
+    { label: "mips" },
+    { label: "nios2" },
+    { label: "riscv64" },
+    { label: "sparc" },
+    { label: "x86_64" },
+    { label: "xtensa-dc233c" },
+    { label: "xtensa-espressif_esp32" },
+    { label: "xtensa-espressif_esp32s2" },
+    { label: "xtensa-espressif_esp32s3" },
+    { label: "xtensa-intel_ace15_mtpm" },
+    { label: "xtensa-intel_tgl_adsp" },
+    { label: "xtensa-mtk_mt8195_adsp" },
+    { label: "xtensa-nxp_imx8m_adsp" },
+    { label: "xtensa-nxp_imx8ulp_adsp" },
+    { label: "xtensa-nxp_imx_adsp" },
+    { label: "xtensa-nxp_rt500_adsp" },
+    { label: "xtensa-nxp_rt600_adsp" },
+    { label: "xtensa-sample_controller" }
 ];
 exports.zephyrHals = [
     { label: "Altera", description: "hal_altera" },

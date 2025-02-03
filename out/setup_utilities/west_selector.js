@@ -52,74 +52,29 @@ async function westSelector(context, wsConfig) {
         async function validateArgs(name) {
             return undefined;
         }
-        state.additionalArgs = await input.showQuickPick({
+        state.additionalArgs = await input.showInputBox({
             title,
             step: 3,
-            totalSteps: 4,
+            totalSteps: 3,
             ignoreFocusOut: true,
             placeholder: "--mr main",
-            items: [
-            { label: "rc/25.01.0" },
-            { label: "rc/24.11.0" },
-            { label: "Other" }
-	    ],
-        canPickMany: false,
-	validate: (selection) => {
-            return undefined;
-        },
-		/*value: "",*/
+            value: "",
+            prompt: 'Additional arguments? (--mr main, --mf west.yml)',
+            validate: validateArgs,
             shouldResume: shouldResume
         }).catch((error) => {
             console.error(error);
             return "";
         });
-	     if (state.additionalArgs) {
-        if (state.additionalArgs.label === "Other") {
-            const customInput = await input.showInputBox({
-                title: 'Enter custom value',
-                step: 3,
-                totalSteps: 4,
-                ignoreFocusOut: true,
-                placeholder: "e.g. rc_24.07.0",
-                validate: (input) => {
-                    return undefined;
-                },
-                shouldResume: shouldResume
-            }).catch((error) => {
-                console.error(error);
-                return "";
-            });
-            if (customInput) {
-                state.additionalArgs = `--mr ${customInput}`;
-            } else {
-                state.additionalArgs = '--mr';
-            }
-        } else {
-            state.additionalArgs = `--mr ${state.additionalArgs.label}`;
-        }
-    } else {
-        state.additionalArgs = '--mr';
-    }
-    state.emptyArgument = await input.showInputBox({
-        title: 'Enter an optional argument (Step 4)',
-        step: 4,
-        totalSteps: 4,
-        ignoreFocusOut: true,
-        placeholder: "--mf west-atm34.yml (Skip if None)",
-        validate: (input) => {
-            return undefined;
-        },
-        shouldResume: shouldResume
-    }).catch((error) => {
-        console.error(error);
-        return "";
-    });
     }
     async function pickWestYml(input, state) {
         // Looks for board directories
         let westOptions = {};
-        westOptions["Openair Repo"] = "";
-        westOptions["Zephyr Private Repo"] = "";
+        westOptions["Full Zephyr"] = "default_west.yml";
+        westOptions["Minimal Zephyr (Select Desired HALs)"] = "minimal_west.yml";
+        westOptions["Minimal BLE Zephyr (Select Desired HALs)"] = "minimal_ble_west.yml";
+        westOptions["NRF Connect Config"] = "ncs_west.yml";
+        westOptions["From Git Repo"] = "";
         westOptions["Select west.yml in Workspace"] = "";
         const westOptionQpItems = [];
         for (let key in westOptions) {
@@ -128,7 +83,7 @@ async function westSelector(context, wsConfig) {
         const pickPromise = await input.showQuickPick({
             title,
             step: 1,
-            totalSteps: 4,
+            totalSteps: 3,
             placeholder: 'Select west.yml',
             ignoreFocusOut: true,
             items: westOptionQpItems,
@@ -144,17 +99,17 @@ async function westSelector(context, wsConfig) {
         }
         let copyTemplate = false;
         let westFile;
-        if (pick.label === "Zephyr Private Repo") {
+        if (pick.label === "From Git Repo") {
             async function validateGitRepoString(name) {
                 return undefined;
             }
             state.gitRepo = await input.showInputBox({
                 title,
                 step: 2,
-                totalSteps: 4,
+                totalSteps: 3,
                 ignoreFocusOut: true,
-                placeholder: "",
-                value: "git@github.com:Atmosic/atmosic-private.git",
+                placeholder: "https://github.com/zephyrproject-rtos/example-application",
+                value: "",
                 prompt: 'Specify a git repository to clone from',
                 validate: validateGitRepoString,
                 shouldResume: shouldResume
@@ -188,33 +143,6 @@ async function westSelector(context, wsConfig) {
                 return;
             }
         }
-        else if (pick.label === "Openair Repo") {
-            async function validateGitRepoString(name) {
-                return undefined;
-            }
-            state.gitRepo = await input.showInputBox({
-                title,
-                step: 2,
-                totalSteps: 4,
-                ignoreFocusOut: true,
-                placeholder: "https://github.com/Atmosic/openair.git",
-                value: "https://github.com/Atmosic/openair.git",
-                prompt: 'Specify the zephyr git repository',
-                validate: validateGitRepoString,
-                shouldResume: shouldResume
-            }).catch((error) => {
-                console.error(error);
-                return undefined;
-            });
-            if (state.gitRepo && state.gitRepo !== "") {
-                await getAdditionalArguments(input, state);
-                state.failed = false;
-            }
-            else {
-                state.failed = true;
-            }
-            return;
-        }
         else {
             westFile = westOptions[pick.label];
             copyTemplate = true;
@@ -230,7 +158,7 @@ async function westSelector(context, wsConfig) {
                 const pickPromise = await (0, multistepQuickPick_1.showQuickPick)({
                     title,
                     step: 2,
-                    totalSteps: 4,
+                    totalSteps: 3,
                     ignoreFocusOut: true,
                     placeholder: "",
                     items: defines_1.zephyrHals,
@@ -275,7 +203,7 @@ async function westSelector(context, wsConfig) {
             const pickPromise = await input.showQuickPick({
                 title,
                 step: 3,
-                totalSteps: 4,
+                totalSteps: 3,
                 ignoreFocusOut: true,
                 placeholder: versionSelectionString,
                 items: versionQP,
