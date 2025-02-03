@@ -530,7 +530,7 @@ async function westInit(context, wsConfig, globalConfig, solo = true, westSelect
     configuration.update('git.autorefresh', false, target, false);
     let cmd;
     if (westSelection.gitRepo) {
-        cmd = `west init -m ${westSelection.gitRepo} ${westSelection.additionalArgs}`;
+        cmd = `west init -m ${westSelection.gitRepo} ${westSelection.additionalArgs} ${westSelection.emptyArgument}`;
     }
     else if (westSelection.path === undefined) {
         cmd = `west init ${westSelection.additionalArgs}`;
