@@ -605,7 +605,7 @@ export async function westInit(context: vscode.ExtensionContext, wsConfig: Works
   } else if (westSelection.path === undefined) {
     cmd = `west init ${westSelection.additionalArgs}`;
   } else {
-    cmd = `west init -l ${westSelection.path} ${westSelection.additionalArgs}`;
+    cmd = `west init -m ${'https://github.com/Atmosic/openair.git'} ${'--mr main'}`;
   }
 
   wsConfig.activeSetupState.zephyrDir = ""
